@@ -1,0 +1,122 @@
+/*
+  HOVER HELP TEXT
+  https://www.w3schools.com/css/css_tooltip.asp
+*/
+
+.ui-help {
+  position: relative;
+}
+
+.ui-help .ui-helptext {
+  visibility: hidden;
+  top: 105%;
+  left: 110%;
+  background-color: var(--c2);
+  color: var(--white);
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  font-size: xx-small;
+  opacity: 85%;
+
+  position: absolute;
+  z-index: 999;
+}
+
+.ui-help:hover .ui-helptext {
+  letter-spacing: 1px;
+  visibility: visible;
+}
+
+/* SOUNDTRACK */
+
+#ui-music{
+  grid-area: "music";
+  width: 12vw;
+  height: 50px;
+  margin-left: 10vh;
+  margin-top: 1vh;
+  border-style: solid;
+  background: var(--c3);
+  padding: 1vh 2.5vh 1vh 2.5vh;
+  color: var(--white);
+  overflow: visible;  /* help on hover */
+}
+
+#ui-music-content {
+  display: grid;
+  grid-template-columns: auto auto;
+  font-size: 0.65em;
+}
+
+#ui-music-head {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+#ui-music-by {
+  font-size: 0.8em;
+  text-wrap: nowrap;
+  overflow: hidden;
+}
+
+#ui-music-volume {
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--white);
+}
+
+/* SETTLEMENTS */
+
+.ui-settlement-info {
+  position: absolute;
+  background-color: var(--c4);
+  border-radius: 25%;
+  padding: 10px;
+  overflow: hidden;
+  opacity: 80%;
+  max-width: 10vw;
+  font-size: small;
+}
+
+/* USER */
+#ui-register {
+  position: absolute;
+  z-index: 998;
+  margin-top: 5vh;
+  padding: 20px;
+  height: 60px;
+  width: 120px;
+  background-color: var(--c3);
+  opacity: 95%;
+  border-radius: 40%;
+  border-color: var(--white);
+  border-style: solid;
+  border-width: 3px;
+  overflow: hidden;
+}
+
+#ui-register > input {
+  width: 100px;
+}
+
+#ui-register > .ui-btn {
+  width: 50px;
+  font-size: 12px;
+}
+
+.ui-settlement-view {
+  position: absolute;
+  margin-top: 5vh;
+  margin-right: 2vw;
+  left: 80%;
+  padding: 20px;
+  background-color: var(--c4);
+  opacity: 95%;
+  border-radius: 20%;
+  border-color: var(--white);
+  color: var(--white);
+}

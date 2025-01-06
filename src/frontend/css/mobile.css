@@ -1,0 +1,25 @@
+@media only screen and (max-width: 1300px) {  /* tablets */
+    #ui-music {
+        width: 20vw;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #ui-music {
+        width: 25vw;
+    }
+}
+
+@media only screen and (max-width: 767px) {  /* tablets */
+    #ui-music {
+        width: 30vw;
+    }
+}
+
+@media only screen and (max-width: 500px) {  /* mobile devices */
+
+}
+
+@include media-breakpoint-between(xs,sm){
+
+}

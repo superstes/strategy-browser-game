@@ -1,0 +1,234 @@
+body {
+    margin: 0;
+    letter-spacing: 1px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    --c1: #121212;
+    --c2: #181818;
+    --c3: #404040;
+    --c4: #606060;
+    --c5: lightgrey;
+    --white: whitesmoke;
+    --accent: orange;
+    --error-bg:	rgb(248, 215, 218);
+    --error-border: rgb(245, 198, 203);
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#ui-error {
+  background-color: var(--error-bg);
+  position: absolute;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 5px solid var(--error-border);
+  border-radius: 0.25rem;
+  z-index: 999;
+  top: 30vh;
+}
+
+/* HUD */
+
+#ui-hud {
+  position: absolute;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas: "clock coords music";
+  grid-gap: 15px;
+  margin: 2vh 3vh 2vh 3vh;
+}
+
+.ui-element {
+  border-style: solid;
+  border-radius: 15px;
+  border-width: 2px;
+  border-color: var(--white);
+  margin-top: 2vh;
+}
+
+.ui-element-head {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--accent);
+  padding-top: 3px;
+  padding-left: 1px;
+}
+
+.ui-element-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  top: 18%;
+}
+
+#ui-clock {
+  grid-area: "clock";
+  background: transparent;
+}
+
+#ui-coords {
+  grid-area: "coords";
+  width: 55px;
+  height: 50px;
+  background-color: var(--c3);
+  text-align: center;
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--white);
+  text-wrap: nowrap;
+}
+
+#ui-coords-data {
+  overflow: hidden;
+}
+
+#ui-coords-head {
+  padding-top: 2px;
+}
+
+/* BUTTONS */
+
+.ui-btn {
+  padding: 0.35rem 0.4rem;
+  opacity: 90%;
+  border-radius: .35rem;
+  border-width: 0;
+  background-color: var(--c5);
+  border-color: var(--c5);
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.ui-btn:hover {
+  background-color: var(--c4);
+  opacity: 100%;
+  -webkit-transition: background-color 0.3s ease-in-out;
+  -moz-transition: background-color 0.3s ease-in-out;
+  -ms-transition: background-color 0.3s ease-in-out;
+  -o-transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+  border-color: var(--white);
+}
+
+.ui-btn-icon {
+  color: var(--c1);
+  font-size: 20px;
+  font-size: 1.5em;
+  line-height: .05em;
+}
+
+.ui-btn:hover .ui-btn-icon {
+  color: var(--white);
+  opacity: 100%;
+  -webkit-transition: color 0.3s ease-in-out;
+  -moz-transition: color 0.3s ease-in-out;
+  -ms-transition: color 0.3s ease-in-out;
+  -o-transition: color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
+}
+
+/* LOADING SCREEN */
+.center-vertical {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.center-horizontal {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+#ui-loader {
+  background-color: var(--c2);
+  opacity: 95%;
+  height: 45vh;
+  width: 55vw;
+  border-radius: 40%;
+  border-color: var(--white);
+  border-style: solid;
+  border-width: 3px;
+  overflow: hidden;
+  top: 20%;
+}
+
+#ui-loader > p {
+  text-align: center;
+  color: var(--white);
+  letter-spacing: 1vw;
+  font-size: larger;
+  padding-top: 10vh;
+  margin: 0;
+}
+
+/* https://cssloaders.github.io/ */
+.ui-loader-animation {
+  width: 15vw;
+  height: 15vw;
+  position: absolute;
+}
+.ui-loader-animation::before , .ui-loader-animation::after{
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50% , -50%);
+  width: 48em;
+  height: 48em;
+  background-image:
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0),
+    radial-gradient(circle 10px, #FFF 100%, transparent 0);
+  background-position: 0em -18em, 0em 18em, 18em 0em, -18em 0em,
+                       13em -13em, -13em -13em, 13em 13em, -13em 13em;
+    background-repeat: no-repeat;
+  font-size: 0.5px;
+  border-radius: 50%;
+  animation: blast 1s ease-in infinite;
+}
+.ui-loader-animation::after {
+  font-size: 1px;
+  background: #fff;
+  animation: bounce 1s ease-in infinite;
+}
+
+@keyframes bounce {
+  0% , 100%{ font-size: 0.75px }
+  50% { font-size: 1.5px }
+}
+@keyframes blast {
+  0% , 40% {
+    font-size: 0.5px;
+  }
+  70% {
+    opacity: 1;
+    font-size: 4px;
+  }
+   100% {
+     font-size: 6px;
+    opacity: 0;
+  }
+}
