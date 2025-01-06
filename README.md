@@ -8,13 +8,13 @@ Contributions to this project like [Discussions and Ideas](https://github.com/su
 
 It is and will always be Open-Source!
 
-The idea is:
-* to create a strategy game that can be played in the browser.
+Some Ideas are:
+* To create a strategy game that can be played in the browser.
 * Either by running a local/dedicated server or just joining an official one.
 * It should always be playable offline.
-* Single and Multiplayer Options
-* Gameplay
-  * Should stay pretty simple for beginnings
+* Single and Multiplayer Options.
+* Gameplay:
+  * Should stay pretty simple for beginnings.
   * Inspirations: Civilization, The Settlers, Banished, Risk-Game, Total War Medieval 2, Crusader Kings 2, ...
 
 ----
