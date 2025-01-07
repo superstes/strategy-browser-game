@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import {config} from './config.js';
-import {u} from './utils.js';
+import {u} from './util/utils.js';
 
 export const graphics = (function() {
 
@@ -48,9 +48,11 @@ export const graphics = (function() {
 
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0xaaaaaa);
+      this.scene.fog = new THREE.FogExp2(0x89b2eb, 0.002);
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
 
       this._CreateLights();
+      this._CreateMap();
       this._CreateCamera();
     }
 
@@ -74,6 +76,19 @@ export const graphics = (function() {
       // night light; could be changed to directional-light
       let light = new THREE.AmbientLight(0xFFFFFF, 0.5);
       this.scene.add(light);
+    }
+
+    _CreateMap() {
+      const plane = new THREE.Mesh(
+        new THREE.PlaneGeometry(config.MAP_SIZE, config.MAP_SIZE, 10, 10),
+        new THREE.MeshStandardMaterial({
+            color: config.COL_MAP_BASE,
+        })
+      );
+      plane.castShadow = false;
+      plane.receiveShadow = true;
+      plane.rotation.x = -Math.PI / 2;
+      this.scene.add(plane);
     }
 
     _UpdateClock(dayTime, dayPart) {

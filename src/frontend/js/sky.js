@@ -3,7 +3,7 @@ import {Sky} from 'three/examples/jsm/objects/Sky.js';
 // import {Water} from 'three/examples/jsm/objects/Water.js';
 
 import {config} from './config.js';
-import {u} from './utils.js';
+import {u} from './util/utils.js';
 
 const GAME_DAY_LIGHT = config.GAME_DAWN * 2 + config.GAME_DAY;
 const GAME_DAY_LIGHT2 = GAME_DAY_LIGHT / 2;

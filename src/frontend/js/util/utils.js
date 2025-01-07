@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {config} from './config.js';
+import {config} from '../config.js';
 
 const CAM_FOV2 = (Math.PI / 360) * (360 - config.CAM_FOV);
 

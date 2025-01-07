@@ -6,8 +6,8 @@ import {config} from './config.js';
 import {sky} from './sky.js';
 import {controls} from './controls.js';
 import {graphics} from './graphics.js';
-import {music} from './music.js';
-import {u} from './utils.js';
+import {music} from './hud/music.js';
+import {u} from './util/utils.js';
 
 let _APP = null;
 

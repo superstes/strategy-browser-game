@@ -1,5 +1,5 @@
-import {config} from './config.js';
-import {u} from './utils.js';
+import {config} from '../config.js';
+import {u} from '../util/utils.js';
 
 const PLAY_RETRY_INTERVAL = 3 * 1000;
 const STORE_PAUSE = "music-pause";
@@ -7,6 +7,7 @@ const STORE_VOLUME = "music-volume";
 const SERVER_TRACKS = 'config.json';
 
 // todo: next button on music player
+// todo: refactor player UI
 
 export const music = (function() {
 

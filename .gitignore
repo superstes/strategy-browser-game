@@ -1,3 +1,5 @@
 v0/
 src/frontend/package-lock.json
 src/frontend/node_modules/
+.idea/
+venv/
