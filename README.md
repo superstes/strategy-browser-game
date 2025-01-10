@@ -34,7 +34,7 @@ Some Ideas are:
 
 ### Frontend
 
-* [Download & Install Node.js](https://nodejs.org/en/download)
+* [Download & Install Node.js](https://github.com/nodesource/distributions?tab=readme-ov-file#installation-instructions-deb)
 * Start DEV-Server: `bash scripts/dev.sh`
 * Open in Browser
 

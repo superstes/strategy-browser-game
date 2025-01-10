@@ -43,6 +43,8 @@ export const config = (function() {
 
         CAM_FOV: 60,
         MAP_SIZE: 5000,
+        MAP_FOG: 0.001,
+        CHUNK_SIZE: 25,
 
         COL_ACCENT: 'orange',
         COL_BG: 'lightgrey',
@@ -52,7 +54,7 @@ export const config = (function() {
         COL_SUN_DAY: 0xFFDD40,
         COL_SUN_DAWN: 0xDD541C,  // 0xC65F58
         COL_SUN_DUSK: 0xFAC258,
-        COL_MAP_BASE: 0x1e601c,
+        COL_MAP_BASE: 0x6fb86c,
 
         SKY: {
             turbidity: 10.0,
@@ -69,5 +71,6 @@ export const config = (function() {
         ID_DAY_DAY: 1,
         ID_DAY_DUSK: 2,
         ID_DAY_NIGHT: 3,
+        LIGHT_NIGHT: 0.3,
     };
 })();

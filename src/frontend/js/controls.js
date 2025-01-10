@@ -3,7 +3,7 @@ import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockContro
 
 import {config} from './config.js';
 
-const COORD_UPDATE_TIME = 1000;
+const COORD_UPDATE_TIME = 250;
 
 export const controls = (function() {
   return {

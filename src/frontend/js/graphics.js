@@ -6,30 +6,9 @@ import {u} from './util/utils.js';
 
 export const graphics = (function() {
 
-  function _GetImageData(image) {
-    const canvas = document.createElement('canvas');
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    const context = canvas.getContext( '2d' );
-    context.drawImage(image, 0, 0);
-
-    return context.getImageData(0, 0, image.width, image.height);
-  }
-
-  function _GetPixel(imagedata, x, y) {
-    const position = (x + imagedata.width * y) * 4;
-    const data = imagedata.data;
-    return {
-        r: data[position],
-        g: data[position + 1],
-        b: data[position + 2],
-        a: data[position + 3]
-    };
-  }
-
   class _Graphics {
     constructor() {
+      this._loaded = false;
       this._threejs = new THREE.WebGLRenderer({
           antialias: true,
       });
@@ -48,12 +27,13 @@ export const graphics = (function() {
 
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0xaaaaaa);
-      this.scene.fog = new THREE.FogExp2(0x89b2eb, 0.002);
+      this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
 
       this._CreateLights();
       this._CreateMap();
       this._CreateCamera();
+      this._RemoveLoadingScreen();
     }
 
     _CreateCamera() {
@@ -74,20 +54,37 @@ export const graphics = (function() {
       this.scene.add(this._lightSun);
 
       // night light; could be changed to directional-light
-      let light = new THREE.AmbientLight(0xFFFFFF, 0.5);
+      let light = new THREE.AmbientLight(0xFFFFFF, config.LIGHT_NIGHT);
       this.scene.add(light);
     }
 
     _CreateMap() {
+      // todo: map chunks
       const plane = new THREE.Mesh(
         new THREE.PlaneGeometry(config.MAP_SIZE, config.MAP_SIZE, 10, 10),
         new THREE.MeshStandardMaterial({
-            color: config.COL_MAP_BASE,
+          wireframe: false,
+          wireframeLinewidth: 1,
+          color: 0xFFFFFF,
+          side: THREE.FrontSide,
+          vertexColors: true,
         })
       );
+      const baseColor = new THREE.Color(config.COL_MAP_BASE);
+      const colors = [];
+      const planePoints = plane.geometry.attributes.position.array;
+      for (let i = 0; i <= plane.geometry.attributes.position.count; i++) {
+        colors.push(baseColor.r, baseColor.g, baseColor.b);
+      }
       plane.castShadow = false;
       plane.receiveShadow = true;
       plane.rotation.x = -Math.PI / 2;
+      plane.geometry.elementsNeedUpdate = true;
+      plane.geometry.verticesNeedUpdate = true;
+      plane.geometry.computeVertexNormals();
+      plane.position.set(0, 0, 0);
+      plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      console.log(plane);
       this.scene.add(plane);
     }
 
@@ -109,8 +106,9 @@ export const graphics = (function() {
       let dayTime = u.TimeOfDay();
       let dayPart = u.PartOfDay(dayTime);
 
+      let intensity = 0.0;
+      /*
       // todo: blend colors
-      let intensity = 0;
       if (dayPart == config.ID_DAY_DAWN) {
         intensity = dayTime / config.GAME_DAWN;
         this._lightSun.color.setHex(config.COL_SUN_DAWN);
@@ -124,11 +122,25 @@ export const graphics = (function() {
         intensity = 1 - (dawnTime / config.GAME_DAWN);
         this._lightSun.color.setHex(config.COL_SUN_DUSK);
       }
+      */
+      if (dayPart != config.ID_DAY_NIGHT) {
+        intensity = 1.0;
+      }
 
       // console.log('SUN STATE2', dayTime, dayPart, intensity);
       this._lightSun.position.set(100, 100, -100);
       this._lightSun.intensity = intensity;
       this._UpdateClock(dayTime, dayPart);
+    }
+
+    _RemoveLoadingScreen() {
+      /*
+      if (u.False(this._loaded) && !this._builder.Busy) {
+        u.HtmlRemove(config.HTML_LOADING);
+      }
+      */
+      u.HtmlRemove(config.HTML_LOADING);
+      this._loaded = true;
     }
 
     _OnWindowResize() {
@@ -151,7 +163,5 @@ export const graphics = (function() {
 
   return {
     Graphics: _Graphics,
-    GetPixel: _GetPixel,
-    GetImageData: _GetImageData,
   };
 })();
