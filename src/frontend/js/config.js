@@ -42,9 +42,10 @@ export const config = (function() {
         PLAYER_POS: new THREE.Vector3(60, 40, 60),
 
         CAM_FOV: 60,
-        MAP_SIZE: 5000,
-        MAP_FOG: 0.001,
-        CHUNK_SIZE: 25,
+        MAP_SIZE: 1000,
+        MAP_RESOLUTION: 1, // minimal addressable objects size
+        MAP_FOG: 0.003,
+        CHUNK_SIZE: 20,
 
         COL_ACCENT: 'orange',
         COL_BG: 'lightgrey',

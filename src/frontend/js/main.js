@@ -20,7 +20,7 @@ class Game {
     this._startTime = Date.now();
     this._player = new THREE.Object3D();
     this._player.position.copy(config.PLAYER_POS);
-    this._sentHome = false;
+    // this._sentHome = false;
 
     this._OnInitialize();
     this._RAF();
@@ -43,6 +43,10 @@ class Game {
   }
 
   _Render(timeInMS) {
+    if (typeof(document.hidden) !== undefined && document['hidden']) {
+      // todo: handle browser-window in background
+    }
+
     const timeInSeconds = Math.min(timeInMS * 0.001, this._minFrameTime);
 
     this._graphics.camera.position.copy(this._player.position);

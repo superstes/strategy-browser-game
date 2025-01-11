@@ -3,6 +3,7 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import {config} from './config.js';
 import {u} from './util/utils.js';
+import {map} from './map/map.js';
 
 export const graphics = (function() {
 
@@ -31,7 +32,7 @@ export const graphics = (function() {
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
 
       this._CreateLights();
-      this._CreateMap();
+      this._AddMap();
       this._CreateCamera();
       this._RemoveLoadingScreen();
     }
@@ -58,34 +59,10 @@ export const graphics = (function() {
       this.scene.add(light);
     }
 
-    _CreateMap() {
-      // todo: map chunks
-      const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(config.MAP_SIZE, config.MAP_SIZE, 10, 10),
-        new THREE.MeshStandardMaterial({
-          wireframe: false,
-          wireframeLinewidth: 1,
-          color: 0xFFFFFF,
-          side: THREE.FrontSide,
-          vertexColors: true,
-        })
-      );
-      const baseColor = new THREE.Color(config.COL_MAP_BASE);
-      const colors = [];
-      const planePoints = plane.geometry.attributes.position.array;
-      for (let i = 0; i <= plane.geometry.attributes.position.count; i++) {
-        colors.push(baseColor.r, baseColor.g, baseColor.b);
-      }
-      plane.castShadow = false;
-      plane.receiveShadow = true;
-      plane.rotation.x = -Math.PI / 2;
-      plane.geometry.elementsNeedUpdate = true;
-      plane.geometry.verticesNeedUpdate = true;
-      plane.geometry.computeVertexNormals();
-      plane.position.set(0, 0, 0);
-      plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      console.log(plane);
-      this.scene.add(plane);
+    _AddMap() {
+      this._map = new map.Chunk();
+      console.log(this._map.plane);
+      this.scene.add(this._map.plane);
     }
 
     _UpdateClock(dayTime, dayPart) {

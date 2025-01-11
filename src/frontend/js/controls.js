@@ -75,6 +75,7 @@ export const controls = (function() {
           case 68: // d
             this._move.right = true;
             break;
+          /*
           case 33: // PG_UP
           case 32: // SPACE
             this._move.up = true;
@@ -82,6 +83,7 @@ export const controls = (function() {
           case 34: // PG_DOWN
             this._move.down = true;
             break;
+          */
         }
       }
 
@@ -103,6 +105,7 @@ export const controls = (function() {
           case 68: // d
             this._move.right = false;
             break;
+          /*
           case 33: // PG_UP
           case 32: // SPACE
             this._move.up = false;
@@ -110,6 +113,7 @@ export const controls = (function() {
           case 34: // PG_DOWN
             this._move.down = false;
             break;
+          */
         }
       }
 
@@ -209,12 +213,14 @@ export const controls = (function() {
         if (this._move.right) {
           this._velocity.x += 2 ** this._acceleration.x * timeInSeconds;
         }
+        /*
         if (this._move.up) {
           this._velocity.y += 2 ** this._acceleration.y * timeInSeconds;
         }
         if (this._move.down) {
           this._velocity.y -= 2 ** this._acceleration.y * timeInSeconds;
         }
+        */
 
         const controlObject = this._controls.getObject();
 
