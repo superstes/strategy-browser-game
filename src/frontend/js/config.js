@@ -44,8 +44,18 @@ export const config = (function() {
         CAM_FOV: 60,
         MAP_SIZE: 1000,
         MAP_RESOLUTION: 1, // minimal addressable objects size
-        MAP_FOG: 0.003,
+        MAP_FOG: 0.005,
         CHUNK_SIZE: 20,
+
+        MAP_TERRAIN_NOISE: {  // hills, greenlands, mountains, lakes
+            octaves: 10,
+            persistence: 0.7,
+            lacunarity: 1.5,
+            exponentiation: 5.0,
+            height: 135.0,
+            scale: 50.0,  // 450
+            seed: 3289432309,
+        },
 
         COL_ACCENT: 'orange',
         COL_BG: 'lightgrey',

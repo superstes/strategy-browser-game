@@ -1,10 +1,13 @@
 import * as THREE from 'three';
 
 import {config} from '../config.js';
+import {noise} from '../util/noise.js';
 
 export const map = (() => {
   class _Chunk {
     constructor() {
+      this._heightGenTerrain = new noise.MapHeight(config.MAP_TERRAIN_NOISE);
+
       let size = config.MAP_SIZE;
       let res = config.MAP_SIZE / config.MAP_RESOLUTION;
       this.plane = new THREE.Mesh(
@@ -30,6 +33,7 @@ export const map = (() => {
       for (let i = 0; i <= this.plane.geometry.attributes.position.count; i++) {
         let [xi, zi, yi] = [i * 3, i * 3 + 1, i * 3 + 2];
         let [x, z] = [planePoints[xi], planePoints[zi]];
+        planePoints[yi] = this._GenerateHeight(x, z);
 
         if (x % config.CHUNK_SIZE == 0 || z % config.CHUNK_SIZE == 0) {
           colors.push(testColor.r, testColor.g, testColor.b);
@@ -45,6 +49,10 @@ export const map = (() => {
       this.plane.geometry.computeVertexNormals();
       this.plane.position.set(0, 0, 0);
       this.plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    }
+
+    _GenerateHeight(x, z) {
+      return this._heightGenTerrain.Get(x, z);
     }
   }
 
