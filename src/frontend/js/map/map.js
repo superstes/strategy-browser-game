@@ -33,7 +33,7 @@ export const map = (() => {
       for (let i = 0; i <= this.plane.geometry.attributes.position.count; i++) {
         let [xi, zi, yi] = [i * 3, i * 3 + 1, i * 3 + 2];
         let [x, z] = [planePoints[xi], planePoints[zi]];
-        planePoints[yi] = this._GenerateHeight(x, z);
+        planePoints[yi] = this._heightGenTerrain.Get(x, z);
 
         if (x % config.CHUNK_SIZE == 0 || z % config.CHUNK_SIZE == 0) {
           colors.push(testColor.r, testColor.g, testColor.b);
@@ -49,10 +49,6 @@ export const map = (() => {
       this.plane.geometry.computeVertexNormals();
       this.plane.position.set(0, 0, 0);
       this.plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    }
-
-    _GenerateHeight(x, z) {
-      return this._heightGenTerrain.Get(x, z);
     }
   }
 

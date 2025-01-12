@@ -1,0 +1,4 @@
+opensimplex
+pillow
+numpy
+oxl-utils
