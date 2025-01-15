@@ -4,5 +4,9 @@ src/frontend/node_modules/
 .idea/
 venv/
 nodesource_setup.sh
-src/backend/statics/map/*.png
-src/backend/statics/map/*.json
+src/backend/statics/map/map*
+src/backend/map_generator/noise.so
+src/backend/map_generator/noise.h
+bin/noise_cli
+lib/opensimplex_cli.py
+lib/noise_cli
