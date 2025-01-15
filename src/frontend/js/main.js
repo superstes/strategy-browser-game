@@ -8,6 +8,8 @@ import {controls} from './controls.js';
 import {graphics} from './graphics.js';
 import {music} from './hud/music.js';
 import {u} from './util/utils.js';
+import {GetServerURL} from './util/server.js';
+import {db} from './util/db.js';
 
 let _APP = null;
 
@@ -53,6 +55,7 @@ class Game {
     this._graphics.camera.quaternion.copy(this._player.quaternion);
   
     this._StepEntities(timeInSeconds);
+    
     this._graphics.Render(timeInSeconds);
 
     this._RAF();
@@ -60,6 +63,8 @@ class Game {
 
   _OnInitialize() {
     this._CreateGUI();
+    GetServerURL();
+    // db.CreateDB();
 
     /*
     this._entities['_map_entities'] = new map_entities.MapEntityManager({

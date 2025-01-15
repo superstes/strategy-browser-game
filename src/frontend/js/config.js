@@ -15,7 +15,6 @@ export const config = (function() {
         THREADING: crossOriginIsolated,
         DB_MAX_SIZE:  navigator.storage.estimate() * 0.8,
         LANGUAGE: 'en',
-        SERVER: 'http://localhost:8000',
         LOC_MUSIC: '/statics/music/',
 
         HTML_GAME: 'ui-game',
@@ -42,10 +41,12 @@ export const config = (function() {
         PLAYER_POS: new THREE.Vector3(60, 40, 60),
 
         CAM_FOV: 60,
-        MAP_SIZE: 1000,
-        MAP_RESOLUTION: 1, // minimal addressable objects size
+        CHUNK_SIZE: 500,
+        CHUNK_COUNT: 4,
+        CHUNK_SHARD_COUNT: 500 / 25, 
+        CHUNK_CHECK_INTERVAL: 3600,
+        CHUNK_RESOLUTION: 450, // minimal addressable objects size
         MAP_FOG: 0.005,
-        CHUNK_SIZE: 20,
 
         MAP_TERRAIN_NOISE: {  // hills, greenlands, mountains, lakes
             octaves: 10,

@@ -1,11 +1,13 @@
 import {config} from '../config.js';
 import {u} from '../util/utils.js';
+import {GetServerURL} from '../util/server.js'
 
 const PLAY_RETRY_INTERVAL = 3 * 1000;
 const STORE_PAUSE = "music-pause";
 const STORE_VOLUME = "music-volume";
 const SERVER_TRACKS = 'config.json';
 
+// todo: fix music loading bug
 // todo: next button on music player
 // todo: refactor player UI
 
@@ -28,7 +30,7 @@ export const music = (function() {
         }
 
         async _FetchTracks() {
-            let res = await fetch(config.SERVER + config.LOC_MUSIC + SERVER_TRACKS);
+            let res = await fetch(GetServerURL() + config.LOC_MUSIC + SERVER_TRACKS);
             if (res.ok) {
                 this._TRACKS = await res.json();
                 this._Init();
@@ -57,7 +59,7 @@ export const music = (function() {
         
         _NextTrack() {
             let trackConfig = this._sequence[this._track_id];
-            let track = new Audio(config.SERVER + config.LOC_MUSIC + trackConfig.file);
+            let track = new Audio(GetServerURL() + config.LOC_MUSIC + trackConfig.file);
             track.volume = this._volume_steps[this._volume_step];
 
             let autoplay = track.play();

@@ -60,9 +60,13 @@ export const graphics = (function() {
     }
 
     _AddMap() {
-      this._map = new map.Chunk();
+      this._map = new map.Chunk(0, 0);
       console.log(this._map.plane);
       this.scene.add(this._map.plane);
+    }
+
+    _UpdateMap() {
+      this._map.Check();
     }
 
     _UpdateClock(dayTime, dayPart) {
@@ -108,6 +112,7 @@ export const graphics = (function() {
       this._lightSun.position.set(100, 100, -100);
       this._lightSun.intensity = intensity;
       this._UpdateClock(dayTime, dayPart);
+      this._UpdateMap();
     }
 
     _RemoveLoadingScreen() {
