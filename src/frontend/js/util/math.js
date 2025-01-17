@@ -39,4 +39,4 @@ export const math = (function() {
         return x >= a && x <= b;
       },
     };
-  })();
+})();

@@ -60,13 +60,11 @@ export const graphics = (function() {
     }
 
     _AddMap() {
-      this._map = new map.Chunk(0, 0);
-      console.log(this._map.plane);
-      this.scene.add(this._map.plane);
+      this._map = new map.Map(this.scene);
     }
 
     _UpdateMap() {
-      this._map.Check();
+      this._map.Update();
     }
 
     _UpdateClock(dayTime, dayPart) {
@@ -80,7 +78,7 @@ export const graphics = (function() {
         color = config.COL_CLOCK_DUSK;
       }
 
-      document.getElementById(config.HTML_CLOCK).style.background="conic-gradient(" + color + " 0, "  + color + " " + dayPercent + "%, "  + config.COL_BG + " 0)";
+      document.getElementById(config.HTML_CLOCK).style.background=`conic-gradient(${color} 0, ${color} ${dayPercent}%, ${config.COL_BG} 0)`;
     }
 
     _UpdateSun() {

@@ -6,6 +6,8 @@ export default defineConfig({
       "Cross-Origin-Embedder-Policy": "require-corp",
       "Cross-Origin-Opener-Policy": "same-origin",
       "GameServer": "http://localhost:8000",
+      // todo: prod - only add for static/map/*
+      "Cache-Control": "max-age=3600",
     },
   },
 });

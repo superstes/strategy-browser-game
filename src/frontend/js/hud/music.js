@@ -1,11 +1,11 @@
 import {config} from '../config.js';
 import {u} from '../util/utils.js';
-import {GetServerURL} from '../util/server.js'
+import {srv, GetServerURL} from '../util/server.js'
 
 const PLAY_RETRY_INTERVAL = 3 * 1000;
 const STORE_PAUSE = "music-pause";
 const STORE_VOLUME = "music-volume";
-const SERVER_TRACKS = 'config.json';
+const SRV_LOC_MUSIC = 'statics/music';
 
 // todo: fix music loading bug
 // todo: next button on music player
@@ -29,17 +29,12 @@ export const music = (function() {
             this._FetchTracks();
         }
 
-        async _FetchTracks() {
-            let res = await fetch(GetServerURL() + config.LOC_MUSIC + SERVER_TRACKS);
-            if (res.ok) {
-                this._TRACKS = await res.json();
-                this._Init();
-            } else {
-                throw new Error('Request failed: ' + res.statusText);
-            }
+        _FetchTracks() {
+            srv.LoadJSON(`${SRV_LOC_MUSIC}/config.json`, (this._Init).bind(this));
         }
 
-        _Init() {
+        _Init(json) {
+            this._TRACKS = json;
             this._RandomizeSequence();
             this._LoadPauseState();
             this._LoadVolumeState();
@@ -59,7 +54,7 @@ export const music = (function() {
         
         _NextTrack() {
             let trackConfig = this._sequence[this._track_id];
-            let track = new Audio(GetServerURL() + config.LOC_MUSIC + trackConfig.file);
+            let track = new Audio(`${GetServerURL()}/${SRV_LOC_MUSIC}/${trackConfig.file}`);
             track.volume = this._volume_steps[this._volume_step];
 
             let autoplay = track.play();

@@ -15,7 +15,6 @@ export const config = (function() {
         THREADING: crossOriginIsolated,
         DB_MAX_SIZE:  navigator.storage.estimate() * 0.8,
         LANGUAGE: 'en',
-        LOC_MUSIC: '/statics/music/',
 
         HTML_GAME: 'ui-game',
         HTML_CLOCK: 'ui-clock',
@@ -42,8 +41,8 @@ export const config = (function() {
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,
-        CHUNK_COUNT: 4,
-        CHUNK_SHARD_COUNT: 500 / 25, 
+        CHUNK_MUL: 2,
+        CHUNK_SHARD_SIZE: 10, 
         CHUNK_CHECK_INTERVAL: 3600,
         CHUNK_RESOLUTION: 450, // minimal addressable objects size
         MAP_FOG: 0.005,
