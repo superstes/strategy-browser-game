@@ -16,7 +16,7 @@ COLOR_SNOW = (255, 255, 255)
 
 
 def _get_color(height: float, max_height: float):
-    factor = 255 / max_height
+    factor = 255 / max(1, max_height)
     h = height * factor
 
     if h < 0:
@@ -51,9 +51,9 @@ def create_map_img(map_data: list[float], pos_x: int, pos_y: int, max_height: fl
     colour_map = np.zeros((CHUNK_SIZE, CHUNK_SIZE, 3), dtype=np.uint8)
 
     for i in range(CHUNK_SIZE * CHUNK_SIZE):
-        xi, yi, zi = i * 3, i * 3 + 1, i * 3 + 2
+        xi, yi, hi = i * 3, i * 3 + 1, i * 3 + 2
         xr, yr = map_data[xi] - pos_x, map_data[yi] - pos_y
-        colour_map[xr, yr] = _get_color(map_data[zi], max_height)
+        colour_map[xr, yr] = _get_color(map_data[hi], max_height)
 
     image = Image.fromarray(colour_map, 'RGB')
     image.save(f"{export_file(pos_x, pos_y)}.png")

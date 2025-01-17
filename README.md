@@ -46,6 +46,7 @@ Some Ideas are:
   * [3D World Generatin](https://www.youtube.com/watch?v=hHGshzIXFWY&list=PLRL3Z3lpLmH3PNGZuDNf2WXnLTHpN9hXy&pp=iAQB)
   * [GitHub](https://github.com/simondevyoutube/)
 * [YouTube - SebastianLague](https://www.youtube.com/@SebastianLague)
+  * [Procedural Landmass Generation](https://github.com/SebLague/Procedural-Landmass-Generation)
 
 ----
 

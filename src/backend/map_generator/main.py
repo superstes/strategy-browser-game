@@ -14,7 +14,8 @@ class Chunk:
         self.area = CHUNK_SIZE * CHUNK_SIZE
         self.data = []
         self.max_height = 0
-        self.export_file = f"{export_file(self.pos_x, self.pos_y)}.json"
+        self.min_height = 0
+        self.export_file = f"{export_file(self.pos_x, self.pos_y)}"
 
     def _centered_chunk(self) -> list[float]:
         m = CHUNK_SIZE / 2
@@ -29,10 +30,10 @@ class Chunk:
         return d
 
     def _export(self):
-        with open(self.export_file, 'w', encoding='utf-8') as f:
+        with open(f'{self.export_file}.json', 'w', encoding='utf-8') as f:
             f.write(json_dumps({'data': self._centered_chunk(), 'max': self.max_height}))
 
-        with open(f"{export_file(self.pos_x, self.pos_y)}.txt", 'w', encoding='utf-8') as f:
+        with open(f"{self.export_file}.txt", 'w', encoding='utf-8') as f:
             f.write(f'{int(time())}')
 
     def build(self):
@@ -41,13 +42,30 @@ class Chunk:
             f"at {self.pos_x}/{self.pos_y}"
         )
 
-        if FORCE_REGEN or not Path(self.export_file).is_file():
+        if FORCE_REGEN or not Path(f'{self.export_file}.json').is_file():
             print(f'{self.cid} | Generating map..')
-            self.data, self.max_height = NOISE_TERRAIN.get_2d_array(
+            geo_data, geo_max_height, geo_min_height = NOISE_GEO.get_2d_array(
+                size=CHUNK_SIZE,
+                pos_x=self.pos_x,
+                pos_y=self.pos_y,
+                lower_by=NOISE_GEO_LOWER_BY,
+            )
+            terrain_data, terrain_max_height, terrain_min_height = NOISE_TERRAIN.get_2d_array(
                 size=CHUNK_SIZE,
                 pos_x=self.pos_x,
                 pos_y=self.pos_y,
             )
+
+            self.max_height = geo_max_height + terrain_max_height
+            self.min_height = geo_min_height + terrain_min_height
+
+            for i in range(CHUNK_SIZE * CHUNK_SIZE):
+                xi, yi, hi = i * 3, i * 3 + 1, i * 3 + 2
+                self.data.extend([
+                    terrain_data[xi],
+                    terrain_data[yi],
+                    geo_data[hi] + terrain_data[hi],
+                ])
 
         else:
             print(f'{self.cid} | Loading map..')
