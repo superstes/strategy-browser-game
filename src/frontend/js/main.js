@@ -15,7 +15,6 @@ let _APP = null;
 
 class Game {
   constructor() {
-    this._graphics = new graphics.Graphics(this);
     this._previousRAF = null;
     this._minFrameTime = 1.0 / 10.0;
     this._entities = {};
@@ -24,6 +23,8 @@ class Game {
     this._player.position.copy(config.PLAYER_POS);
     // this._sentHome = false;
 
+    this._CreateDevTools();
+    this._graphics = new graphics.Graphics(this);
     this._OnInitialize();
     this._RAF();
   }
@@ -62,7 +63,6 @@ class Game {
   }
 
   _OnInitialize() {
-    this._CreateGUI();
     GetServerURL();
     // db.CreateDB();
 
@@ -91,7 +91,6 @@ class Game {
       scene: this._graphics.scene,
       player: this._player,
       gui: this._gui,
-      guiParams: this._guiParams,
     });
 
     this._entities['_soundtrack'] = new music.SoundTrack();
@@ -102,14 +101,17 @@ class Game {
     this._RegisterEventListeners();
   }
 
-  _CreateGUI() {
-    this._guiParams = {
+  _CreateDevTools() {
+    if (!config.DEBUG) {
+      return;
+    }
+    this.devToolParams = {
       general: {
       },
     };
-    this._gui = new GUI();
+    this.devTools = new GUI();
 
-    this._gui.close();
+    this.devTools.close();
   }
 
   _LoadBackground() {

@@ -41,10 +41,12 @@ export const config = (function() {
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,
-        CHUNK_MUL: 2,
-        CHUNK_SHARD_SIZE: 10, 
+        // JS_CHUNK_SIZE in map_generator/config.py
+        MAP_SIZE: 2,
+        CHUNK_SHARD_SIZE: 10,
         CHUNK_CHECK_INTERVAL: 3600,
-        CHUNK_RESOLUTION: 450, // minimal addressable objects size
+        CHUNK_RESOLUTION: 250,  // vectors by chunk; 250 = 21.000 height values
+        // JS_CHUNK_RESOLUTION in map_generator/config.py
         MAP_FOG: 0.005,
 
         MAP_TERRAIN_NOISE: {  // hills, greenlands, mountains, lakes

@@ -8,7 +8,7 @@ import {map} from './map/map.js';
 export const graphics = (function() {
 
   class _Graphics {
-    constructor() {
+    constructor(main) {
       this._loaded = false;
       this._threejs = new THREE.WebGLRenderer({
           antialias: true,
@@ -31,10 +31,29 @@ export const graphics = (function() {
       this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
 
+      this.devTools = main.devTools;
+      this.devToolParams = main.devToolParams;
+      this._DevTools(main.devTools, main.devToolParams);
+
       this._CreateLights();
       this._AddMap();
       this._CreateCamera();
       this._RemoveLoadingScreen();
+    }
+
+    _DevTools(devTools, devToolParams) {
+      devToolParams.graphics = {
+        fog: true,
+      };
+
+      let devGraphics = devTools.addFolder('Graphics');
+      devGraphics.add(devToolParams.graphics, 'fog').onChange(() => {
+        if (devToolParams.graphics.fog) {
+          this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
+        } else {
+          this.scene.fog = new THREE.FogExp2(0x89b2eb, 0);
+        }
+      });
     }
 
     _CreateCamera() {
@@ -60,7 +79,7 @@ export const graphics = (function() {
     }
 
     _AddMap() {
-      this._map = new map.Map(this.scene);
+      this._map = new map.Map(this.scene, this.devTools, this.devToolParams);
     }
 
     _UpdateMap() {

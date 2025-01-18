@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-from config import export_file, CHUNK_SIZE
+from config import CHUNK_RESOLUTION
 
 COLOR_DEEPWATER = (0, 62, 178)
 COLOR_WATER = (9, 82, 198)
@@ -16,6 +16,9 @@ COLOR_SNOW = (255, 255, 255)
 
 
 def _get_color(height: float, max_height: float):
+    del max_height
+    max_height = 90
+
     factor = 255 / max(1, max_height)
     h = height * factor
 
@@ -47,14 +50,14 @@ def _get_color(height: float, max_height: float):
     return COLOR_SNOW
 
 
-def create_map_img(map_data: list[float], pos_x: int, pos_y: int, max_height: float):
-    colour_map = np.zeros((CHUNK_SIZE, CHUNK_SIZE, 3), dtype=np.uint8)
+def create_map_img(export_file: str, map_data: list[float], pos_x: int, pos_y: int, max_height: float):
+    colour_map = np.zeros((CHUNK_RESOLUTION, CHUNK_RESOLUTION, 3), dtype=np.uint8)
 
-    for i in range(CHUNK_SIZE * CHUNK_SIZE):
+    for i in range(CHUNK_RESOLUTION * CHUNK_RESOLUTION):
         xi, yi, hi = i * 3, i * 3 + 1, i * 3 + 2
         xr, yr = map_data[xi] - pos_x, map_data[yi] - pos_y
         colour_map[xr, yr] = _get_color(map_data[hi], max_height)
 
     image = Image.fromarray(colour_map, 'RGB')
-    image.save(f"{export_file(pos_x, pos_y)}.png")
+    image.save(f"{export_file}.png")
     return image

@@ -4,7 +4,7 @@
 
 This is pretty much a hobby project as it is interesting to play around with 'visual' programming.
 
-Contributions to this project like [Discussions and Ideas](https://github.com/superstes/game/discussions) are very welcome.
+Contributions to this project like [Discussions and Ideas](https://github.com/superstes/strategy-browser-game/discussions) are very welcome.
 
 It is and will always be Open-Source!
 
@@ -32,11 +32,7 @@ Some Ideas are:
 
 ## Development
 
-### Frontend
-
-* [Download & Install Node.js](https://github.com/nodesource/distributions?tab=readme-ov-file#installation-instructions-deb)
-* Start DEV-Server: `bash scripts/dev.sh`
-* Open in Browser
+See: [Develop](https://github.com/superstes/strategy-browser-game/blob/main/Develop.md)
 
 ----
 

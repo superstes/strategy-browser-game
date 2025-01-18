@@ -6,6 +6,17 @@ import {srv} from '../util/server.js';
 import {u} from '../util/utils.js';
 
 const STORE_DB_CHUNK = 'db-chunk-';
+const COLOR_DEEPWATER = new THREE.Color("rgb(0, 62, 178)");
+const COLOR_WATER = new THREE.Color("rgb(9, 82, 198)");
+const COLOR_SAND = new THREE.Color("rgb(254, 224, 179)");
+const COLOR_GRASS = new THREE.Color("rgb(9, 120, 93)");
+const COLOR_DARKGRASS = new THREE.Color("rgb(10, 107, 72)");
+const COLOR_DARKESTGRASS = new THREE.Color("rgb(11, 94, 51)");
+const COLOR_DARKROCKS = new THREE.Color("rgb(140, 142, 123)");
+const COLOR_ROCKS = new THREE.Color("rgb(160, 162, 143)");
+const COLOR_BLACKROCKS = new THREE.Color("rgb(53, 54, 68)");
+const COLOR_SNOW = new THREE.Color("rgb(255, 255, 240)");
+const COLOR_MARK = new THREE.Color(0x000000);
 
 export const map = (() => {
   class _Chunk {
@@ -25,9 +36,9 @@ export const map = (() => {
         new THREE.MeshStandardMaterial({
           wireframe: false,
           wireframeLinewidth: 1,
+          vertexColors: true,
           color: 0xFFFFFF,
           side: THREE.FrontSide,
-          vertexColors: true,
         })
       );
       this.plane.castShadow = false;
@@ -71,11 +82,21 @@ export const map = (() => {
     }
 
     _ProcessChunk(raw) {
-      this.plane.geometry.attributes.position.array = new Float32Array(raw.data);
+      console.log(this._log_prefix + 'Updating');
+      console.log(this._log_prefix + 'Raw', raw.data);
+      let planePoints = this.plane.geometry.attributes.position.array;
+
+      for (let i = 0; i <= this.plane.geometry.attributes.position.count; i++) {
+        let [xi, yi, hi] = [i * 3, i * 3 + 1, i * 3 + 2];
+        planePoints[hi] = raw.data[i];
+      }
+
+      // this.plane.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(raw.data), 3))
+      this.plane.geometry.attributes.position.needsUpdate = true;
       this._needsUpdate = true;
-      console.log(this._log_prefix + 'Saving');
+      //console.log(this._log_prefix + 'Saving');
       // db.SaveMapChunk(raw.data, this.pos_x, this.pos_y, this.buildTime);
-      localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos_x}_${this.pos_y}`, this.buildTime);
+      //localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos_x}_${this.pos_y}`, this.buildTime);
     }
 
     _Load() {
@@ -102,51 +123,102 @@ export const map = (() => {
         return;
       }
       console.log(this._log_prefix + 'Building');
-      let baseColor = new THREE.Color(config.COL_MAP_BASE);
-      let testColor = new THREE.Color(0x000000)
       let colors = [];
       let planePoints = this.plane.geometry.attributes.position.array;
 
       for (let i = 0; i <= this.plane.geometry.attributes.position.count; i++) {
-        let [x, y] = [planePoints[i * 3], planePoints[i * 3 + 1]];
+        let [x, y, h] = [planePoints[i * 3], planePoints[i * 3 + 1], planePoints[i * 3 + 2]];
 
-        if ((Math.round(x) % config.CHUNK_SHARD_SIZE == 0)) {
-          colors.push(testColor.r, testColor.g, testColor.b);
-        } else if ((Math.round(y) % config.CHUNK_SHARD_SIZE) == 0) {
-          // console.log(y, Math.round(y), (Math.round(y) % config.CHUNK_SHARD_COUNT))
-          colors.push(testColor.r, testColor.g, testColor.b);
+        if ((Math.round(x) % config.CHUNK_SHARD_SIZE) == 0 || (Math.round(y) % config.CHUNK_SHARD_SIZE) == 0) {
+          colors.push(COLOR_MARK.r, COLOR_MARK.g, COLOR_MARK.b);
         } else {
-          colors.push(baseColor.r, baseColor.g, baseColor.b);
+          let c = this._GetHeightColor(h);
+          colors.push(c.r, c.g, c.b);
         }
       }
 
       this.plane.geometry.verticesNeedUpdate = true;
       this.plane.geometry.elementsNeedUpdate = true;
-      // this.plane.geometry.computeVertexNormals();
+      this.plane.geometry.computeVertexNormals();
       this.plane.position.set(this.pos_x, 0, this.pos_y);
       this.plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      if (!this._loaded) {
-      }
       this._needsUpdate = false;
+    }
+
+    _GetHeightColor(height) {
+      let m = 90;
+      let h = height * (255 / m);
+
+      if (h < 0) {
+        h = 0
+      }
+
+      if (h > 255) {
+        h = 255
+      }
+
+      if (h <= 1) {
+        return COLOR_DEEPWATER
+      }
+      if (h <= 1.5) {
+        return COLOR_WATER
+      }
+      if (h <= 2) {
+        return COLOR_SAND
+      }
+      if (h <= 18) {
+        return COLOR_GRASS
+      }
+      if (h <= 30) {
+        return COLOR_DARKGRASS
+      }
+      if (h <= 70) {
+        return COLOR_DARKESTGRASS
+      }
+      if (h <= 115) {
+        return COLOR_DARKROCKS
+      }
+      if (h <= 125) {
+        return COLOR_ROCKS
+      }
+      if (h <= 220) {
+        return COLOR_BLACKROCKS
+      }
+      return COLOR_SNOW
     }
   }
 
   class _Map {
-    constructor(scene) {
-      this._scene = scene;
-      this.chunks = [];
+    constructor(scene, devTools, devToolParams) {
+      this._chunks = [];
+      this._DevTools(devTools, devToolParams);
+      this._group = new THREE.Group()
+      scene.add(this._group);
       this._CreateChunks();
     }
 
+    _DevTools(devTools, devToolParams) {
+      devToolParams.map = {
+        wireframe: false,
+      };
+
+      let devMap = devTools.addFolder('Map');
+      devMap.add(devToolParams.map, 'wireframe').onChange(() => {
+        for (let ci in this._chunks) {
+          this._chunks[ci].plane.material.wireframe = devToolParams.map.wireframe;
+        }
+      });
+    }
+
     _CreateChunks() {
-      for (let xi = 0; xi <= config.CHUNK_MUL - 1; xi++) {
-        for (let yi = 0; yi <= config.CHUNK_MUL - 1; yi++) {
+      for (let xi = 0; xi <= config.MAP_SIZE - 1; xi++) {
+        for (let yi = 0; yi <= config.MAP_SIZE - 1; yi++) {
           let [offset_x, offset_y] = [config.CHUNK_SIZE * xi, config.CHUNK_SIZE * yi];
           let chunk = new _Chunk(offset_x, offset_y);
           chunk.visible = true;
-          this.chunks.push(chunk);
+          this._chunks.push(chunk);
           console.log(`Chunk ${offset_x}/${offset_y}: `, chunk, chunk.plane.geometry.attributes)
-          this._scene.add(chunk.plane);
+          this._group.add(chunk.plane);
         }
       }
     }
@@ -154,7 +226,7 @@ export const map = (() => {
     Update() {
       // todo: load and unload chunks in regards to distance to player
       // todo: unload chunks if window in background
-      for (let c of this.chunks) {
+      for (let c of this._chunks) {
         if (c.visible) {
           c.Update()
         }
