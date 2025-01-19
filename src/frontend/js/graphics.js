@@ -8,7 +8,7 @@ import {map} from './map/map.js';
 export const graphics = (function() {
 
   class _Graphics {
-    constructor(main) {
+    constructor(game) {
       this._loaded = false;
       this._threejs = new THREE.WebGLRenderer({
           antialias: true,
@@ -31,17 +31,20 @@ export const graphics = (function() {
       this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
 
-      this.devTools = main.devTools;
-      this.devToolParams = main.devToolParams;
-      this._DevTools(main.devTools, main.devToolParams);
+      this.devTools = game.devTools;
+      this.devToolParams = game.devToolParams;
+      this._DevTools(game.devTools, game.devToolParams);
 
       this._CreateLights();
-      this._AddMap();
       this._CreateCamera();
+      this._AddMap();
       this._RemoveLoadingScreen();
     }
 
     _DevTools(devTools, devToolParams) {
+      if (!config.DEBUG) {
+        return;
+      }
       devToolParams.graphics = {
         fog: true,
       };
@@ -79,7 +82,7 @@ export const graphics = (function() {
     }
 
     _AddMap() {
-      this._map = new map.Map(this.scene, this.devTools, this.devToolParams);
+      this._map = new map.Map(this.scene, this.devTools, this.devToolParams, this.camera);
     }
 
     _UpdateMap() {

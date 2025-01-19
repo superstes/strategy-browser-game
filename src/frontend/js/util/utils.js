@@ -170,6 +170,18 @@ export const u = (function() {
       return true;
     },
 
+    WithinDistance: function(vA, vB, distance) {
+      let dX = vA.x - vB.x;
+      let dY = vA.y - vB.y;
+      if (dX < 0) {
+        dX *= -1;
+      }
+      if (dY < 0) {
+        dY *= -1;
+      }
+      return dX < distance && dY < distance;
+    },
+
     // https://discourse.threejs.org/t/detect-if-target-is-behind-the-camera-bis/219/2
     InCameraFOV: function(cameraPosition, cameraDirection, position) {
       let p = new THREE.Vector3();

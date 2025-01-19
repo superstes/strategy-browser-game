@@ -1,6 +1,5 @@
 from time import time
 from json import dumps as json_dumps
-from json import loads as json_loads
 
 from config import *
 from to_img import create_map_img
@@ -34,31 +33,26 @@ class Chunk:
             f.write(f'{int(time())}')
 
     def build(self):
+        if not FORCE_REGEN and Path(f'{self.export_file}.json').is_file():
+            return
+
         print(
             f"{self.cid} | Processing map: size {CHUNK_RESOLUTION} data-density {self.area} "
             f"at {self.key}"
         )
 
-        if FORCE_REGEN or not Path(f'{self.export_file}.json').is_file():
-            print(f'{self.cid} | Generating map..')
-            geo = NOISE_GEO.get_2d_array(
-                lower_by=NOISE_GEO_LOWER_BY,
-                **self._noise_kwargs,
-            )
-            terrain = NOISE_TERRAIN.get_2d_array(**self._noise_kwargs)
+        print(f'{self.cid} | Generating map..')
+        geo = NOISE_GEO.get_2d_array(
+            lower_by=NOISE_GEO_LOWER_BY,
+            **self._noise_kwargs,
+        )
+        terrain = NOISE_TERRAIN.get_2d_array(**self._noise_kwargs)
 
-            self.max_height = geo['max'] + terrain['max']
-            self.min_height = geo['min'] + terrain['min']
+        self.max_height = geo['max'] + terrain['max']
+        self.min_height = geo['min'] + terrain['min']
 
-            for i in range(len(geo['data'])):
-                self.data.append(geo['data'][i] + terrain['data'][i])
-
-        else:
-            print(f'{self.cid} | Loading map..')
-            with open(self.export_file, 'r', encoding='utf-8') as f:
-                map_data_raw = json_loads(f.read())
-                self.data = map_data_raw['data']
-                self.max_height = map_data_raw['max']
+        for i in range(len(geo['data'])):
+            self.data.append(geo['data'][i] + terrain['data'][i])
 
         print(f'{self.cid} | Exporting as JSON.. ({int(time())-start_time}s)')
         self._export()

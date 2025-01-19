@@ -21,14 +21,13 @@ const COLOR_MARK = new THREE.Color(0x000000);
 export const map = (() => {
   class _Chunk {
     constructor(pos_x, pos_y) {
-      this.pos_x = pos_x;
-      this.pos_y = pos_y;
+      this.pos = new THREE.Vector2(pos_x, pos_y);
       this.buildTime = 0;
       this.lastBuildCheck = 0;
       this._loaded = false;
       this.visible = false;
       this._needsUpdate = false;
-      this._log_prefix = `Map chunk ${this.pos_x}/${this.pos_y}: `
+      this._log_prefix = `Map chunk ${this.pos.x}/${this.pos.y}: `
       let size = config.CHUNK_SIZE;
       let res = config.CHUNK_RESOLUTION;
       this.plane = new THREE.Mesh(
@@ -55,7 +54,7 @@ export const map = (() => {
       if (u.TimestampSec() - config.CHUNK_CHECK_INTERVAL < this.lastBuildCheck) {
         return;
       }
-      srv.LoadText(`statics/map/${this.pos_x}_${this.pos_y}.txt`, (this._SetChunkBuildTime).bind(this));
+      srv.LoadText(`statics/map/${this.pos.x}_${this.pos.y}.txt`, (this._SetChunkBuildTime).bind(this));
       this.lastBuildCheck = u.TimestampSec();
     }
 
@@ -66,7 +65,7 @@ export const map = (() => {
       if (!this._loaded) {
         this._Download();
         /*
-        if (localStorage.getItem(`${STORE_DB_CHUNK}_${this.pos_x}_${this.pos_y}`) != this.buildTime) {
+        if (localStorage.getItem(`${STORE_DB_CHUNK}_${this.pos.x}_${this.pos.y}`) != this.buildTime) {
           this._Download();
         } else {
           this._Load();
@@ -95,25 +94,25 @@ export const map = (() => {
       this.plane.geometry.attributes.position.needsUpdate = true;
       this._needsUpdate = true;
       //console.log(this._log_prefix + 'Saving');
-      // db.SaveMapChunk(raw.data, this.pos_x, this.pos_y, this.buildTime);
-      //localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos_x}_${this.pos_y}`, this.buildTime);
+      // db.SaveMapChunk(raw.data, this.pos.x, this.pos.y, this.buildTime);
+      //localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos.x}_${this.pos.y}`, this.buildTime);
     }
 
     _Load() {
       // todo: download if loading fails..
       console.log(this._log_prefix + 'Loading');
-      // db.LoadMapChunk(this.pos_x, this.pos_y, (this._ProcessChunk).bind(this));
+      // db.LoadMapChunk(this.pos.x, this.pos.y, (this._ProcessChunk).bind(this));
     }
 
     _Download() {
       console.log(this._log_prefix + 'Downloading');
-      srv.LoadJSON(`statics/map/${this.pos_x}_${this.pos_y}.json`, (this._ProcessChunk).bind(this));
+      srv.LoadJSON(`statics/map/${this.pos.x}_${this.pos.y}.json`, (this._ProcessChunk).bind(this));
     }
 
     _Purge() {
       this.buildTime = 0;
       this._loaded = false;
-      localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos_x}_${this.pos_y}`, '');
+      localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos.x}_${this.pos.y}`, '');
     }
 
     _Build() {
@@ -140,7 +139,7 @@ export const map = (() => {
       this.plane.geometry.verticesNeedUpdate = true;
       this.plane.geometry.elementsNeedUpdate = true;
       this.plane.geometry.computeVertexNormals();
-      this.plane.position.set(this.pos_x, 0, this.pos_y);
+      this.plane.position.set(this.pos.x, 0, this.pos.y);
       this.plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       this._needsUpdate = false;
     }
@@ -189,8 +188,9 @@ export const map = (() => {
   }
 
   class _Map {
-    constructor(scene, devTools, devToolParams) {
+    constructor(scene, devTools, devToolParams, camera) {
       this._chunks = [];
+      this._camera = camera;
       this._DevTools(devTools, devToolParams);
       this._group = new THREE.Group()
       scene.add(this._group);
@@ -198,6 +198,9 @@ export const map = (() => {
     }
 
     _DevTools(devTools, devToolParams) {
+      if (!config.DEBUG) {
+        return;
+      }
       devToolParams.map = {
         wireframe: false,
       };
@@ -215,17 +218,31 @@ export const map = (() => {
         for (let yi = 0; yi <= config.MAP_SIZE - 1; yi++) {
           let [offset_x, offset_y] = [config.CHUNK_SIZE * xi, config.CHUNK_SIZE * yi];
           let chunk = new _Chunk(offset_x, offset_y);
-          chunk.visible = true;
           this._chunks.push(chunk);
           console.log(`Chunk ${offset_x}/${offset_y}: `, chunk, chunk.plane.geometry.attributes)
-          this._group.add(chunk.plane);
         }
+      }
+      this._ChunkVisibility();
+    }
+
+    _ChunkVisibility() {
+      for (let c of this._chunks) {
+        let cv = u.WithinDistance(this._camera.position, c.pos, config.CHUNK_SIZE * config.CHUNK_RENDER_DISTANCE);
+        if (cv && !c.visible) {
+          console.log(`Chunk ${c.pos.x}/${c.pos.y}: Showing`)
+          this._group.add(c.plane);
+        } else if (!cv && c.visible) {
+          console.log(`Chunk ${c.pos.x}/${c.pos.y}: Hiding`)
+          this._group.remove(c.plane);
+        }
+        c.visible = cv;
       }
     }
 
     Update() {
       // todo: load and unload chunks in regards to distance to player
       // todo: unload chunks if window in background
+      this._ChunkVisibility();
       for (let c of this._chunks) {
         if (c.visible) {
           c.Update()

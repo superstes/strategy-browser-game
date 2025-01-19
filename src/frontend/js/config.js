@@ -37,12 +37,13 @@ export const config = (function() {
         STORE_UID: 'uid',
 
         PLAYER_SPEED: 9,
-        PLAYER_POS: new THREE.Vector3(60, 40, 60),
+        PLAYER_POS: new THREE.Vector3(1000, 40, 1000),
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,
         // JS_CHUNK_SIZE in map_generator/config.py
-        MAP_SIZE: 2,
+        CHUNK_RENDER_DISTANCE: 1,  // CHUNK_SIZE * DISTANCE
+        MAP_SIZE: 5,
         CHUNK_SHARD_SIZE: 10,
         CHUNK_CHECK_INTERVAL: 3600,
         CHUNK_RESOLUTION: 250,  // vectors by chunk; 250 = 21.000 height values

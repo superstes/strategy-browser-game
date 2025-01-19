@@ -4,12 +4,12 @@ from sys import path as sys_path
 
 ENV_KEY_CHUNKS = 'GAME_MAP_CHUNKS'
 
-FORCE_REGEN = True
+FORCE_REGEN = False
 JS_CHUNK_SIZE = 500
 JS_CHUNK_RESOLUTION = 250
 CHUNK_RESOLUTION = JS_CHUNK_RESOLUTION + 1
 # squared needs to be the size of plane.geometry.attributes.position.count
-MAP_CHUNK_MUL = 3
+MAP_CHUNK_MUL = 5
 
 if ENV_KEY_CHUNKS in environ:
     MAP_CHUNK_MUL = int(environ[ENV_KEY_CHUNKS])
