@@ -53,10 +53,10 @@ def _get_color(height: float, max_height: float):
 def create_map_img(export_file: str, map_data: list[float], pos_x: int, pos_y: int, max_height: float):
     colour_map = np.zeros((CHUNK_RESOLUTION, CHUNK_RESOLUTION, 3), dtype=np.uint8)
 
-    for i in range(CHUNK_RESOLUTION * CHUNK_RESOLUTION):
-        xi, yi, hi = i * 3, i * 3 + 1, i * 3 + 2
-        xr, yr = map_data[xi] - pos_x, map_data[yi] - pos_y
-        colour_map[xr, yr] = _get_color(map_data[hi], max_height)
+    for x in range(CHUNK_RESOLUTION):
+        for y in range(CHUNK_RESOLUTION):
+            hi = (x * CHUNK_RESOLUTION) + y
+            colour_map[x, y] = _get_color(map_data[hi], max_height)
 
     image = Image.fromarray(colour_map, 'RGB')
     image.save(f"{export_file}.png")
