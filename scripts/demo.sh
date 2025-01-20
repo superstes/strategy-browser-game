@@ -56,4 +56,4 @@ VENV_PATH='/tmp/.sup-game-venv'
 python3 -m virtualenv "$VENV_PATH" >/dev/null
 source "${VENV_PATH}/bin/activate"
 pip install -r "${PATH_BE}/map_generator/requirements.txt" >/dev/null
-bash scripts/map-gen.sh >/dev/null
+GAME_MAP_EXPORT_IMG=0 bash scripts/map-gen.sh >/dev/null

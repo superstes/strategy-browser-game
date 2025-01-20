@@ -1,4 +1,5 @@
 from time import time
+from os import environ
 from json import dumps as json_dumps
 
 from config import *
@@ -57,14 +58,15 @@ class Chunk:
         print(f'{self.cid} | Exporting as JSON.. ({int(time())-start_time}s)')
         self._export()
 
-        print(f'{self.cid} | Exporting as image.. ({int(time())-start_time}s)')
-        create_map_img(
-            export_file=self.export_file,
-            map_data=self.data,
-            pos_x=self.pos_x,
-            pos_y=self.pos_y,
-            max_height=self.max_height,
-        )
+        if ENV_KEY_IMG_EXPORT not in environ or environ[ENV_KEY_IMG_EXPORT] == '1':
+            print(f'{self.cid} | Exporting as image.. ({int(time())-start_time}s)')
+            create_map_img(
+                export_file=self.export_file,
+                map_data=self.data,
+                pos_x=self.pos_x,
+                pos_y=self.pos_y,
+                max_height=self.max_height,
+            )
 
         print(f'{self.cid} | Done ({int(time())-start_time}s)')
 

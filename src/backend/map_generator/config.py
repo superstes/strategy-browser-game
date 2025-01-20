@@ -3,6 +3,7 @@ from pathlib import Path
 from sys import path as sys_path
 
 ENV_KEY_CHUNKS = 'GAME_MAP_CHUNKS'
+ENV_KEY_IMG_EXPORT = 'GAME_MAP_EXPORT_IMG'
 
 FORCE_REGEN = False
 JS_CHUNK_SIZE = 500
