@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import WEBGL from 'three/examples/jsm/capabilities/WebGL.js';
-import {GUI} from 'dat.gui'
+import {GUI} from 'dat.gui';
 
 import {config} from './config.js';
 import {sky} from './sky.js';
