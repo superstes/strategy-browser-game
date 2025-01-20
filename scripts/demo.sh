@@ -22,4 +22,4 @@ fi
 
 echo '### Setup HTML ###'
 mkdir -p "${PATH_BASE}/demo"
-cp "${PATH_FE}/demo.html" "${PATH_BASE}/demo/"
+cp "${PATH_FE}/demo.html" "${PATH_BASE}/demo/index.html"
