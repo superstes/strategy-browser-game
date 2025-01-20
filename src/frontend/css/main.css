@@ -232,3 +232,12 @@ a:hover {
     opacity: 0;
   }
 }
+
+/* DEMO */
+#demo-repo{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: var(--c3);
+  padding: 3px 7px;
+}
