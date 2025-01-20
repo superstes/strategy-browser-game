@@ -39,15 +39,10 @@ function patch_js_imports() {
   src="$1"
   dst="$2"
   sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*.js
-  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/map/"*.js
-  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/util/"*.js
+  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*/*.js
 }
 
-URL_NODE_MOD="https://${DEMO_DOMAIN}/node_modules"
-
-patch_js_imports "as THREE from 'three'" "as THREE from '${URL_NODE_MOD}/three/src/Three.js'"
-patch_js_imports "from 'three/examples" "from '${URL_NODE_MOD}/three/examples"
-patch_js_imports "from 'dat.gui'" "from '${URL_NODE_MOD}/dat.gui/src/dat/index.js'"
+patch_js_imports "http://localhost:5173" "https://${DEMO_DOMAIN}"
 
 echo '### Generating map ###'
 cd "$PATH_BASE"

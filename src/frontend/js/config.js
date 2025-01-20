@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
 
 function IsSet(data) {
     if (data === null || data === undefined || data === '') {

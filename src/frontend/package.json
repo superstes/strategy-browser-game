@@ -4,7 +4,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "dat.gui": "^0.7.9",
-    "open-simplex-noise": "^2.5.0",
     "three": "^0.163.0"
   },
   "devDependencies": {
