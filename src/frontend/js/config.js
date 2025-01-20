@@ -37,7 +37,7 @@ export const config = (function() {
         STORE_UID: 'uid',
 
         PLAYER_SPEED: 9,
-        PLAYER_POS: new THREE.Vector3(100, 80, 100),
+        PLAYER_POS: new THREE.Vector3(100, 60, 100),
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,
