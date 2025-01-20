@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Game DEMO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/hud.css">
+    <link rel="stylesheet" type="text/css" href="/css/mobile.css">
+    <!--<link rel="icon" type="image/png" href="http://localhost:8000/statics/img/favicon.png">-->
+    <link rel="stylesheet" type="text/css" href="/node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/node_modules/@fortawesome/fontawesome-free/css/solid.min.css">
+  </head>
+  <body>
+    <div id="demo-repo"><a href="https://github.com/superstes/strategy-browser-game">github.com/superstes/strategy-browser-game</a></div>
+    <!-- Errors -->
+    <div id="ui-error" class="center-horizontal" hidden="hidden"></div>
+    <!-- User Interface -->
+    <div id="ui-hud">
+      <div id="ui-clock" class="ui-element ui-element-circle ui-help">
+        <div class="ui-helptext">Daytime Clock</div>
+      </div>
+      <div id="ui-coords" class="ui-element ui-help">
+        <div id="ui-coords-head" class="ui-element-head">Position</div>
+        <div id="ui-coords-data"></div>
+        <div class="ui-helptext">Coordinates - X/Y & Height</div>
+      </div>
+      <div id="ui-music" class="ui-element">
+        <div id="ui-music-head" class="ui-element-head">Soundtrack</div>
+        <div id="ui-music-content">
+          <div>
+            <div id="ui-music-load">Loading..</div>
+            <div id="ui-music-title" hidden="hidden"></div>
+            <div id="ui-music-by" hidden="hidden"></div>  
+          </div>
+          <div>
+            <div id="ui-music-play" class="ui-btn ui-help" hidden="hidden" style="visibility: hidden; display: none;">
+              <i class="ui-btn-icon fa-solid fa-circle-play"></i>
+              <div class="ui-helptext">Start Music</div>
+            </div>
+            <div id="ui-music-pause" class="ui-btn ui-help">
+              <i class="ui-btn-icon fa-solid fa-circle-pause"></i>
+              <div class="ui-helptext">Pause Music</div>
+            </div>
+            <div id="ui-music-volume" class="ui-btn ui-help">
+              <i class="ui-btn-icon fa-solid fa-volume-high"></i>
+              <div class="ui-helptext">Change Music Volume</div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+    <!-- Game -->
+    <div id="ui-loader" class="center-horizontal">
+      <p>Loading..</p>
+      <span class="ui-loader-animation center-vertical center-horizontal"></span>
+    </div>
+    <div id="ui-game"></div>
+
+    <script src="/js/main.js" type="module"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/fontawesome.min.js"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/solid.min.js"></script>
+  </body>
+</html>

@@ -240,8 +240,6 @@ export const map = (() => {
     }
 
     Update() {
-      // todo: load and unload chunks in regards to distance to player
-      // todo: unload chunks if window in background
       this._ChunkVisibility();
       for (let c of this._chunks) {
         if (c.visible) {

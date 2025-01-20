@@ -10,8 +10,8 @@ PATH_LIB="$(pwd)/lib"
 
 if ! [ -f "${PATH_LIB}/noise_cli" ] || ! [ -f "${PATH_LIB}/opensimplex_cli.py" ]
 then
-  echo "You need to install the noise-cli first: lib/README.md"
-  exit 1
+  echo '### Downloading Dependencies.. ###'
+  bash scripts/init-lib.sh
 fi
 
 echo '### Running map-generator.. ###'
@@ -22,10 +22,11 @@ trap 'kill $BGPID; exit' INT
 python3 scripts/dev_statics.py "$PATH_BE" &
 BGPID=$!
 
+cd "$PATH_FE"
+
 if ! [ -d "${PATH_FE}/node_modules/" ]
 then
   npm install
 fi
 
-cd "$PATH_FE"
 npx vite --host
