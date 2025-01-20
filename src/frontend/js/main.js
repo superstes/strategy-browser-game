@@ -1,6 +1,6 @@
-import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
-import WEBGL from 'http://localhost:5173/node_modules/three/examples/jsm/capabilities/WebGL.js';
-import {GUI} from 'http://localhost:5173/node_modules/dat.gui/build/dat.gui.module.js';
+import * as THREE from 'three'
+import WEBGL from 'three/examples/jsm/capabilities/WebGL.js';
+import {GUI} from 'dat.gui';
 
 import {config} from './config.js';
 import {sky} from './sky.js';

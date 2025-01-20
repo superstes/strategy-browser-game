@@ -1,4 +1,4 @@
-import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
+import * as THREE from 'three'
 
 import {config} from '../config.js';
 

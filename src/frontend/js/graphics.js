@@ -1,5 +1,5 @@
-import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
-import Stats from 'http://localhost:5173/node_modules/three/examples/jsm/libs/stats.module.js';
+import * as THREE from 'three'
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import {config} from './config.js';
 import {u} from './util/utils.js';

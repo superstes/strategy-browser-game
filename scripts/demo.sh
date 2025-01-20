@@ -32,17 +32,7 @@ fi
 echo '### Setup HTML ###'
 mkdir -p "${PATH_BASE}/demo"
 cp "${PATH_FE}/demo.html" "${PATH_BASE}/demo/index.html"
-
-echo '### Update Imports ###'
-
-function patch_js_imports() {
-  src="$1"
-  dst="$2"
-  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*.js
-  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*/*.js
-}
-
-patch_js_imports "http://localhost:5173" "https://${DEMO_DOMAIN}"
+sed -i "s|<DOMAIN>|${DEMO_DOMAIN}|g" "${PATH_BASE}/demo/index.html"
 
 echo '### Generating map ###'
 cd "$PATH_BASE"

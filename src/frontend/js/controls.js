@@ -1,5 +1,5 @@
-import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
-import {PointerLockControls} from 'http://localhost:5173/node_modules/three/examples/jsm/controls/PointerLockControls.js';
+import * as THREE from 'three'
+import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 
 import {config} from './config.js';
 

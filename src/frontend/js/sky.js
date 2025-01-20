@@ -1,6 +1,6 @@
-import * as THREE from 'http://localhost:5173/node_modules/three/build/three.module.min.js';
-import {Sky} from 'http://localhost:5173/node_modules/three/examples/jsm/objects/Sky.js';
-// import {Water} from 'http://localhost:5173/node_modules/three/examples/jsm/objects/Water.js';
+import * as THREE from 'three'
+import {Sky} from 'three/examples/jsm/objects/Sky.js';
+// import {Water} from 'three/examples/jsm/objects/Water.js';
 
 import {config} from './config.js';
 import {u} from './util/utils.js';
