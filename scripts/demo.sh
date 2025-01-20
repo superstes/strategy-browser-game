@@ -34,6 +34,18 @@ mkdir -p "${PATH_BASE}/demo"
 cp "${PATH_FE}/demo.html" "${PATH_BASE}/demo/index.html"
 sed -i "s|<DOMAIN>|${DEMO_DOMAIN}|g" "${PATH_BASE}/demo/index.html"
 
+echo '### Update Imports ###'
+
+function patch_js_imports() {
+  src="$1"
+  dst="$2"
+  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*.js
+  sed -i "s|${src}|${dst}|g" "${PATH_FE}/js/"*/*.js
+}
+
+URL_NODE_MOD="https://${DEMO_DOMAIN}/node_modules"
+patch_js_imports "from 'three/examples" "from '${URL_NODE_MOD}/three/examples"
+
 echo '### Generating map ###'
 cd "$PATH_BASE"
 VENV_PATH='/tmp/.sup-game-venv'
