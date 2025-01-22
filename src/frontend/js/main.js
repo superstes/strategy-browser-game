@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import WEBGL from 'three/examples/jsm/capabilities/WebGL.js';
 import {GUI} from 'dat.gui';
 
@@ -9,7 +9,7 @@ import {graphics} from './graphics.js';
 import {music} from './hud/music.js';
 import {u} from './util/utils.js';
 import {GetServerURL} from './util/server.js';
-import {db} from './util/db.js';
+import {user} from './user.js';
 
 let _APP = null;
 
@@ -20,12 +20,14 @@ class Game {
     this._entities = {};
     this._startTime = Date.now();
     this._player = new THREE.Object3D();
-    this._player.position.copy(config.PLAYER_POS);
-    // this._sentHome = false;
+    this._userLogonWindow = true;
+    this.user = new user.User();
+    this._initialized = false;
+
+    GetServerURL();
+    this._OnInitialize();
 
     this._CreateDevTools();
-    this._graphics = new graphics.Graphics(this);
-    this._OnInitialize();
     this._RAF();
   }
 
@@ -39,63 +41,58 @@ class Game {
     });
   }
 
+  /*
   _StepEntities(timeInSeconds) {
     for (let k in this._entities) {
       this._entities[k].Update(timeInSeconds);
     }
   }
+  */
 
   _Render(timeInMS) {
-    if (typeof(document.hidden) !== undefined && document['hidden']) {
-      // todo: handle browser-window in background
-    }
+    if (this.user == null || !this.user.Valid() || (typeof(document.hidden) !== undefined && document['hidden'])) {
+      // skip rendering if user is not logged-on or windows is in background
+    } else {
+      if (this._userLogonWindow) {
+        this._AfterLogon();
+      }
+      const timeInSeconds = Math.min(timeInMS * 0.001, this._minFrameTime);
 
-    const timeInSeconds = Math.min(timeInMS * 0.001, this._minFrameTime);
-
-    this._graphics.camera.position.copy(this._player.position);
-    this._graphics.camera.quaternion.copy(this._player.quaternion);
-  
-    this._StepEntities(timeInSeconds);
+      this._graphics.camera.position.copy(this._player.position);
+      this._graphics.camera.quaternion.copy(this._player.quaternion);
     
-    this._graphics.Render(timeInSeconds);
+      // this._StepEntities(timeInSeconds);
+      
+      this._graphics.Render(timeInSeconds);
+    }
 
     this._RAF();
   }
 
+  _AfterLogon() {
+    this._player.position.copy(this.user.home);
+    this._graphics.camera.position.copy(this._player.position);
+    
+    u.HtmlHide(config.HTML_USER_LOGON);
+    u.HtmlUnhide(config.HTML_HUD);
+    u.HtmlUnhide(config.HTML_LOADING);
+    this._userLogonWindow = false;
+
+    this._graphics.AfterLogon();
+  }
+
   _OnInitialize() {
-    GetServerURL();
-    // db.CreateDB();
-
-    /*
-    this._entities['_map_entities'] = new map_entities.MapEntityManager({
-      heightGen: this._heightGenerator,
-      camera: this._graphics.camera,
-      cameraDirection: this._graphics.cameraDirection,
-    });
-    */
-    /*
-    this._entities['_user'] = new user.User({
-      settlements: this._entities['_map_entities'].settlements,
-    });
-    this._sentHome = true;
-    console.log("@HOME", this._entities['_user'].settlements[0], this._entities['_user'].Home);
-    this._player.position.copy(this._entities['_user'].Home);
-    */
-
+    this._graphics = new graphics.Graphics(this);
     this._entities['_sky'] = new sky.TerrainSky({
       camera: this._graphics.camera,
       scene: this._graphics.scene,
     });
-
-    this._entities['_controls'] = new controls.FPSControls({
+    this._controls = new controls.FPSControls({
       scene: this._graphics.scene,
       player: this._player,
       gui: this._gui,
     });
-
     this._entities['_soundtrack'] = new music.SoundTrack();
-
-    this._graphics.camera.position.copy(this._player.position);
 
     this._LoadBackground();
     this._RegisterEventListeners();
@@ -119,7 +116,7 @@ class Game {
   }
 
   _RegisterEventListeners() {
-    let controls = this._entities['_controls'];
+    let controls = this._controls;
     document.addEventListener('keydown', function (e) { controls.OnKeyDown(e) }, false);
     document.addEventListener('keyup', function (e) { controls.OnKeyUp(e) }, false);
 
@@ -131,16 +128,19 @@ class Game {
     musicPlay.addEventListener("click", function () { soundTrack.OnPlay() }, false);
     musicPause.addEventListener("click", function () { soundTrack.OnPause() }, false);
     musicVolume.addEventListener("click", function () { soundTrack.OnVolumeChange() }, false);    
+  }
+}
 
-    /*
-    let map_entities = this._entities['_map_entities'];
-    document.addEventListener('keydown', function (e) { map_entities.OnKeyDown(e) }, false);
-    */
-    /*
-    let user = this._entities['_user'];
-    let userRegister = document.getElementById(config.HTML_USER_REGISTER_BTN);
-    userRegister.addEventListener("click", function (e) { user.OnRegister(e) }, false);
-    */
+function registerEventListeners() {
+  let userRegister = document.getElementById(config.HTML_USER_LOGON_FORM);
+  userRegister.addEventListener("submit", function (e) { _APP.user.HandleLogon(e) }, false);
+}
+
+function initRegisterLogon() {
+  let username = localStorage.getItem(config.STORE_UID);
+  if (username !== undefined) {
+    let userRegisterName = document.getElementById(config.HTML_USER_LOGON_NAME);
+    userRegisterName.value = username;
   }
 }
 
@@ -152,6 +152,8 @@ function _Main() {
       return;
     }
     _APP = new Game();
+    registerEventListeners();
+    initRegisterLogon();
 
   } catch (err) {
     u.ShowError('An unexpected error occurred:<br>' + err);

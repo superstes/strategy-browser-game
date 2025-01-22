@@ -77,8 +77,8 @@ export const music = (function() {
                 u.HtmlRemove(config.HTML_MUSIC_LOAD);
                 let musicTitle = document.getElementById(config.HTML_MUSIC_TITLE);
                 let musicBy = document.getElementById(config.HTML_MUSIC_BY);
-                musicTitle.innerHTML = '<b>Title</b>: ' + trackConfig.title;
-                musicBy.innerHTML = '<b>By</b>: ' + trackConfig.by;
+                musicTitle.innerHTML = `<b>Title</b>: ${trackConfig.title}`;
+                musicBy.innerHTML = `<b>By</b>: ${trackConfig.by}`;
                 musicTitle.removeAttribute("hidden");
                 musicBy.removeAttribute("hidden");
 

@@ -1,8 +1,7 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 import {config} from '../config.js';
 import {srv} from '../util/server.js';
-// import {db} from '../util/db.js';
 import {u} from '../util/utils.js';
 
 const STORE_DB_CHUNK = 'db-chunk-';
@@ -94,14 +93,11 @@ export const map = (() => {
       this.plane.geometry.attributes.position.needsUpdate = true;
       this._needsUpdate = true;
       //console.log(this._log_prefix + 'Saving');
-      // db.SaveMapChunk(raw.data, this.pos.x, this.pos.y, this.buildTime);
-      //localStorage.setItem(`${STORE_DB_CHUNK}_${this.pos.x}_${this.pos.y}`, this.buildTime);
     }
 
     _Load() {
       // todo: download if loading fails..
       console.log(this._log_prefix + 'Loading');
-      // db.LoadMapChunk(this.pos.x, this.pos.y, (this._ProcessChunk).bind(this));
     }
 
     _Download() {

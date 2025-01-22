@@ -83,40 +83,62 @@
 }
 
 /* USER */
-#ui-register {
+#ui-logon {
+  position: relative;
+  height: 40vh;
+  z-index: 1;
+  background-color: #f3f3f3;
+  padding-top: 40vh;
+  padding-bottom: 20vh;
+  width: 100vw;
+}
+
+#ui-logon-form {
+  margin: 0;
   position: absolute;
-  z-index: 998;
-  margin-top: 5vh;
-  padding: 20px;
-  height: 60px;
-  width: 120px;
-  background-color: var(--c3);
-  opacity: 95%;
-  border-radius: 40%;
-  border-color: var(--white);
-  border-style: solid;
-  border-width: 3px;
-  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-#ui-register > input {
-  width: 100px;
+#ui-logon-form > * {
+  display: block;
+  font-weight: bold;
 }
 
-#ui-register > .ui-btn {
-  width: 50px;
-  font-size: 12px;
+#ui-logon-form > label {
+  padding-top: 10px;
+  text-align: center;
+  padding-bottom: 5px;
 }
 
-.ui-settlement-view {
-  position: absolute;
-  margin-top: 5vh;
-  margin-right: 2vw;
-  left: 80%;
-  padding: 20px;
-  background-color: var(--c4);
-  opacity: 95%;
-  border-radius: 20%;
-  border-color: var(--white);
-  color: var(--white);
+#ui-logon-form, #ui-logon-form > input, #ui-logon-form > button {
+  letter-spacing: 1px;
+}
+
+#ui-logon-form > button {
+  margin-top: 10px;
+  margin-left: 33%;
+  padding: 3px 10px;
+  border-radius: 5px;
+  background-color: greenyellow;
+  opacity: 0.7;
+}
+
+#ui-logon-form > button:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+#ui-logon-error {
+  visibility: hidden;
+  background-color: orange;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 5vh;
+  opacity: 0.8;
+}
+
+input {
+  padding: 3px 6px;
 }

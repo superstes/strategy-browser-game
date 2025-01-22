@@ -37,6 +37,9 @@ export const graphics = (function() {
 
       this._CreateLights();
       this._CreateCamera();
+    }
+
+    AfterLogon() {
       this._AddMap();
       this._RemoveLoadingScreen();
     }

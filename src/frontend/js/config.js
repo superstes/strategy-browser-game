@@ -17,6 +17,7 @@ export const config = (function() {
         LANGUAGE: 'en',
 
         HTML_GAME: 'ui-game',
+        HTML_HUD: 'ui-hud-init',
         HTML_CLOCK: 'ui-clock',
         HTML_LOADING: 'ui-loader',
         HTML_MUSIC_LOAD: 'ui-music-load',
@@ -27,17 +28,18 @@ export const config = (function() {
         HTML_MUSIC_PAUSE: 'ui-music-pause',
         HTML_MUSIC_VOLUME: 'ui-music-volume',
         HTML_COORDS: 'ui-coords-data',
-        HTML_USER_REGISTER: 'ui-register',
-        HTML_USER_REGISTER_BTN: 'ui-register-btn',
-        HTML_USER_REGISTER_NAME: 'ui-register-username',
+        // todo: rename to logon and add separate register form
+        HTML_USER_LOGON: 'ui-logon',
+        HTML_USER_LOGON_FORM: 'ui-logon-form',
+        HTML_USER_LOGON_NAME: 'ui-logon-name',
+        HTML_USER_LOGON_ERROR: 'ui-logon-error',
         HTML_ERROR: 'ui-error',
-        HTML_SETTLEMENT_EDIT: 'ui-settlement-edit',
-        HTML_SETTLEMENT_VIEW: 'ui-settlement-view',
 
-        STORE_UID: 'uid',
+        STORE_UID: 'username',
 
         PLAYER_SPEED: 9,
         PLAYER_POS: new THREE.Vector3(100, 60, 100),
+        PLAYER_HEIGHT: 60,
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,

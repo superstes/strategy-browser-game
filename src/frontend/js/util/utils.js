@@ -8,7 +8,7 @@ const GAME_DAY_FULL = config.GAME_DAWN + config.GAME_DAY + config.GAME_NIGHT + c
 const GAME_DAY_MID = config.GAME_DAWN + config.GAME_DAY;
 const GAME_DAY_DUSK = config.GAME_DAWN * 2 + config.GAME_DAY;
 const GAME_DAY_NOON = config.GAME_DAWN + (config.GAME_DAY / 2);
-const MAP_SIZE2 = config.MAP_SIZE * 2;
+const MAP_LEN = config.MAP_SIZE * config.CHUNK_RESOLUTION;  // todo: fix
 
 function RandomInt(max) {
   if (isNaN(max)) {
@@ -148,15 +148,7 @@ export const u = (function() {
     RandomFloatMinMax: RandomFloatMinMax,
 
     RandomMapPosition: function() {
-      let rx = RandomInt(MAP_SIZE2);
-      let ry = RandomInt(MAP_SIZE2);
-      if (rx > config.MAP_SIZE) {
-          rx = rx - MAP_SIZE2;
-      }
-      if (ry > config.MAP_SIZE) {
-          ry = ry - MAP_SIZE2;
-      }
-      return new THREE.Vector2(rx, ry);
+      return new THREE.Vector2(RandomInt(MAP_LEN), RandomInt(MAP_LEN));
     },
 
     // https://gist.github.com/Daniel-Hug/d7984d82b58d6d2679a087d896ca3d2b
