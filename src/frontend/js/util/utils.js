@@ -86,6 +86,10 @@ export const u = (function() {
       return array;
     },
 
+    HtmlExists: function(element) {
+      return document.getElementById(element) === undefined;
+    },
+
     HtmlHide: function(element) {
       let e = document.getElementById(element);
       e.setAttribute("hidden", "hidden");
@@ -164,7 +168,15 @@ export const u = (function() {
 
     WithinDistance: function(vA, vB, distance) {
       let dX = vA.x - vB.x;
-      let dY = vA.y - vB.y;
+      let [ay, by] = [vA.y, vB.y];
+      if (vA.z !== undefined) {
+        ay = vA.z;
+      }
+      if (vB.z !== undefined) {
+        by = vB.z;
+      }
+      let dY = ay - by;
+
       if (dX < 0) {
         dX *= -1;
       }
@@ -210,7 +222,7 @@ export const u = (function() {
     },
 
     TimestampSec: function() {
-      return new Date().getTime() / 1000;
+      return new Date().getTime() * 0.001;
     },
   };
 })();

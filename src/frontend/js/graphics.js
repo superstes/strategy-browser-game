@@ -28,8 +28,9 @@ export const graphics = (function() {
 
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0xaaaaaa);
-      this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
       this._lightSun = new THREE.DirectionalLight(0xFFFFFF, 1);
+
+      this._UpdateFog(u.PartOfDay(u.TimeOfDay()));
 
       this.devTools = game.devTools;
       this.devToolParams = game.devToolParams;
@@ -44,6 +45,10 @@ export const graphics = (function() {
       this._RemoveLoadingScreen();
     }
 
+    OnLogout() {
+      this._map.Purge();
+    }
+
     _DevTools(devTools, devToolParams) {
       if (!config.DEBUG) {
         return;
@@ -55,9 +60,9 @@ export const graphics = (function() {
       let devGraphics = devTools.addFolder('Graphics');
       devGraphics.add(devToolParams.graphics, 'fog').onChange(() => {
         if (devToolParams.graphics.fog) {
-          this.scene.fog = new THREE.FogExp2(0x89b2eb, config.MAP_FOG);
+          this.scene.fog = new THREE.FogExp2(config.MAP_FOG_DAY, config.MAP_FOG);
         } else {
-          this.scene.fog = new THREE.FogExp2(0x89b2eb, 0);
+          this.scene.fog = new THREE.FogExp2(config.MAP_FOG_DAY, 0);
         }
       });
     }
@@ -67,8 +72,6 @@ export const graphics = (function() {
       const near = 1;
       const far = 25000.0;
       this.camera = new THREE.PerspectiveCamera(config.CAM_FOV, aspect, near, far);
-      this.camera.position.copy(config.PLAYER_POS);
-
       this.cameraDirection = new THREE.Vector3();
       this.camera.getWorldDirection(this.cameraDirection);
     }
@@ -106,6 +109,14 @@ export const graphics = (function() {
       document.getElementById(config.HTML_CLOCK).style.background=`conic-gradient(${color} 0, ${color} ${dayPercent}%, ${config.COL_BG} 0)`;
     }
 
+    _UpdateFog(dayPart) {
+      if (dayPart == config.ID_DAY_NIGHT) {
+        this.scene.fog = new THREE.FogExp2(config.MAP_FOG_NIGHT, config.MAP_FOG);
+      } else {
+        this.scene.fog = new THREE.FogExp2(config.MAP_FOG_DAY, config.MAP_FOG);
+      }
+    }
+
     _UpdateSun() {
       let dayTime = u.TimeOfDay();
       let dayPart = u.PartOfDay(dayTime);
@@ -135,6 +146,7 @@ export const graphics = (function() {
       this._lightSun.position.set(100, 100, -100);
       this._lightSun.intensity = intensity;
       this._UpdateClock(dayTime, dayPart);
+      this._UpdateFog(dayPart);
       this._UpdateMap();
     }
 

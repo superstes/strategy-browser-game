@@ -17,7 +17,7 @@ export const config = (function() {
         LANGUAGE: 'en',
 
         HTML_GAME: 'ui-game',
-        HTML_HUD: 'ui-hud-init',
+        HTML_HUD: 'ui-hud',
         HTML_CLOCK: 'ui-clock',
         HTML_LOADING: 'ui-loader',
         HTML_MUSIC_LOAD: 'ui-music-load',
@@ -33,24 +33,26 @@ export const config = (function() {
         HTML_USER_LOGON_FORM: 'ui-logon-form',
         HTML_USER_LOGON_NAME: 'ui-logon-name',
         HTML_USER_LOGON_ERROR: 'ui-logon-error',
+        HTML_USER_LOGOUT: 'ui-logout',
         HTML_ERROR: 'ui-error',
 
         STORE_UID: 'username',
 
         PLAYER_SPEED: 9,
-        PLAYER_POS: new THREE.Vector3(100, 60, 100),
         PLAYER_HEIGHT: 60,
 
         CAM_FOV: 60,
         CHUNK_SIZE: 500,
         // JS_CHUNK_SIZE in map_generator/config.py
-        CHUNK_RENDER_DISTANCE: 1,  // CHUNK_SIZE * DISTANCE
+        CHUNK_RENDER_DISTANCE: 1.5,  // CHUNK_SIZE * DISTANCE
         MAP_SIZE: 5,
         CHUNK_SHARD_SIZE: 10,
         CHUNK_CHECK_INTERVAL: 3600,
         CHUNK_RESOLUTION: 250,  // vectors by chunk; 250 = 21.000 height values
         // JS_CHUNK_RESOLUTION in map_generator/config.py
         MAP_FOG: 0.005,
+        MAP_FOG_DAY: 0x89a9c5,
+        MAP_FOG_NIGHT: 0x2b4357,
 
         MAP_TERRAIN_NOISE: {  // hills, greenlands, mountains, lakes
             octaves: 10,

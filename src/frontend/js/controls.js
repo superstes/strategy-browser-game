@@ -40,7 +40,6 @@ export const controls = (function() {
           params.player, document.body
         );
         params.scene.add(this._controls.getObject());
-        this._UpdateCoordinates(config.PLAYER_POS);
       }
 
       OnKeyDown(event) {
@@ -229,12 +228,12 @@ export const controls = (function() {
         controlObject.position.add(updown);
 
         // oldPosition.copy(controlObject.position);
-        this._UpdateCoordinates(controlObject.position);
+        this.UpdateCoordinates(controlObject.position);
       }
 
-      _UpdateCoordinates(newPos) {
+      UpdateCoordinates(newPos) {
         if (Date.now() > this._hudCoordsUpdateTime + COORD_UPDATE_TIME) {
-          this._hudCoords.innerHTML = '<p>' + Math.ceil(newPos.x) + '/' + Math.ceil(newPos.z) + '<br>' + Math.ceil(newPos.y) + '</p>';  
+          this._hudCoords.innerHTML = `<p>${Math.ceil(newPos.x)}/${Math.ceil(newPos.z)}<br>${Math.ceil(newPos.y)}</p>`;
           this._hudCoordsUpdateTime = Date.now();
         }
       }

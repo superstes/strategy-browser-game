@@ -34,14 +34,14 @@ NOISE_GEO = OpenSimplexCLI(OpenSimplexConfig(
     scale=1000,
     seed=524924922,
 ))
-NOISE_GEO_LOWER_BY = 18
+NOISE_GEO_LOWER_BY = 20
 
 NOISE_TERRAIN = OpenSimplexCLI(OpenSimplexConfig(
     octaves=10,
     persistence=0.6,
-    lacunarity=1.7,
+    lacunarity=1.6,
     exponentiation=5.0,
-    height=100.0,
+    height=150.0,
     scale=50,
     seed=3289432309,
 ))

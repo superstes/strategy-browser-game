@@ -52,17 +52,22 @@ class Game {
   _Render(timeInMS) {
     if (this.user == null || !this.user.Valid() || (typeof(document.hidden) !== undefined && document['hidden'])) {
       // skip rendering if user is not logged-on or windows is in background
+      if (!this._userLogonWindow) {
+        this._OnLogout();
+      }
     } else {
       if (this._userLogonWindow) {
         this._AfterLogon();
       }
       const timeInSeconds = Math.min(timeInMS * 0.001, this._minFrameTime);
 
+      // todo: keep player and camera height relative to map height
       this._graphics.camera.position.copy(this._player.position);
       this._graphics.camera.quaternion.copy(this._player.quaternion);
     
       // this._StepEntities(timeInSeconds);
-      
+
+      this._controls.Update(timeInSeconds);
       this._graphics.Render(timeInSeconds);
     }
 
@@ -72,13 +77,24 @@ class Game {
   _AfterLogon() {
     this._player.position.copy(this.user.home);
     this._graphics.camera.position.copy(this._player.position);
+    this._controls.UpdateCoordinates(this._player.position);
     
     u.HtmlHide(config.HTML_USER_LOGON);
     u.HtmlUnhide(config.HTML_HUD);
-    u.HtmlUnhide(config.HTML_LOADING);
+    if (u.HtmlExists(config.HTML_LOADING)) {
+      u.HtmlUnhide(config.HTML_LOADING);
+    }
     this._userLogonWindow = false;
 
     this._graphics.AfterLogon();
+  }
+
+  _OnLogout() {
+    u.HtmlHide(config.HTML_HUD);
+    // u.HtmlHide(config.HTML_LOADING);
+    u.HtmlUnhide(config.HTML_USER_LOGON);
+    this._graphics.OnLogout();
+    this._userLogonWindow = true;
   }
 
   _OnInitialize() {
@@ -134,6 +150,9 @@ class Game {
 function registerEventListeners() {
   let userRegister = document.getElementById(config.HTML_USER_LOGON_FORM);
   userRegister.addEventListener("submit", function (e) { _APP.user.HandleLogon(e) }, false);
+
+  let userLogoff = document.getElementById(config.HTML_USER_LOGOUT);
+  userLogoff.addEventListener("click", function () { _APP.user.HandleLogout() }, false);
 }
 
 function initRegisterLogon() {

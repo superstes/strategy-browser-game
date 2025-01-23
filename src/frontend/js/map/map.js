@@ -225,6 +225,7 @@ export const map = (() => {
       for (let c of this._chunks) {
         let cv = u.WithinDistance(this._camera.position, c.pos, config.CHUNK_SIZE * config.CHUNK_RENDER_DISTANCE);
         if (cv && !c.visible) {
+          console.log("CHUNK TEST", this._camera.position, c.pos, cv);
           console.log(`Chunk ${c.pos.x}/${c.pos.y}: Showing`)
           this._group.add(c.plane);
         } else if (!cv && c.visible) {
@@ -233,6 +234,13 @@ export const map = (() => {
         }
         c.visible = cv;
       }
+    }
+
+    Purge() {
+      for (let c of this._chunks) {
+        this._group.remove(c);
+      }
+      this._chunks = [];
     }
 
     Update() {

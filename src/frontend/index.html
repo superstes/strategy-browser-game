@@ -26,40 +26,42 @@
       </form>
     </div>
     <!-- User Interface -->
-    <div id="ui-hud">
-      <div id="ui-hud-init" hidden="hidden">
-        <div id="ui-clock" class="ui-element ui-element-circle ui-help">
-          <div class="ui-helptext">Daytime Clock</div>
-        </div>
-        <div id="ui-coords" class="ui-element ui-help">
-          <div id="ui-coords-head" class="ui-element-head">Position</div>
-          <div id="ui-coords-data"></div>
-          <div class="ui-helptext">Coordinates - X/Y & Height</div>
-        </div>
-        <div id="ui-music" class="ui-element">
-          <div id="ui-music-head" class="ui-element-head">Soundtrack</div>
-          <div id="ui-music-content">
-            <div>
-              <div id="ui-music-load">Loading..</div>
-              <div id="ui-music-title" hidden="hidden"></div>
-              <div id="ui-music-by" hidden="hidden"></div>  
+    <div id="ui-hud" hidden="hidden">
+      <div id="ui-clock" class="ui-element ui-element-circle ui-help">
+        <div class="ui-helptext">Daytime</div>
+      </div>
+      <div id="ui-coords" class="ui-element ui-help">
+        <div id="ui-coords-head" class="ui-element-head">Position</div>
+        <div id="ui-coords-data"></div>
+        <div class="ui-helptext">X/Y & Height</div>
+      </div>
+      <div id="ui-music" class="ui-element">
+        <div id="ui-music-head" class="ui-element-head">Soundtrack</div>
+        <div id="ui-music-content">
+          <div>
+            <div id="ui-music-load">Loading..</div>
+            <div id="ui-music-title" hidden="hidden"></div>
+            <div id="ui-music-by" hidden="hidden"></div>  
+          </div>
+          <div>
+            <div id="ui-music-play" class="ui-btn ui-help" hidden="hidden" style="visibility: hidden; display: none;">
+              <i class="ui-btn-icon fa-solid fa-circle-play"></i>
+              <div class="ui-helptext">Start Music</div>
             </div>
-            <div>
-              <div id="ui-music-play" class="ui-btn ui-help" hidden="hidden" style="visibility: hidden; display: none;">
-                <i class="ui-btn-icon fa-solid fa-circle-play"></i>
-                <div class="ui-helptext">Start Music</div>
-              </div>
-              <div id="ui-music-pause" class="ui-btn ui-help">
-                <i class="ui-btn-icon fa-solid fa-circle-pause"></i>
-                <div class="ui-helptext">Pause Music</div>
-              </div>
-              <div id="ui-music-volume" class="ui-btn ui-help">
-                <i class="ui-btn-icon fa-solid fa-volume-high"></i>
-                <div class="ui-helptext">Change Music Volume</div>
-              </div>
+            <div id="ui-music-pause" class="ui-btn ui-help">
+              <i class="ui-btn-icon fa-solid fa-circle-pause"></i>
+              <div class="ui-helptext">Pause Music</div>
+            </div>
+            <div id="ui-music-volume" class="ui-btn ui-help">
+              <i class="ui-btn-icon fa-solid fa-volume-high"></i>
+              <div class="ui-helptext">Change Music Volume</div>
             </div>
           </div>
-        </div>  
+        </div>
+      </div>
+      <div id="ui-logout" class="ui-element ui-help">
+        <div><i class="fa fa-sign-out" aria-hidden="true"></i></div>
+        <div class="ui-helptext">Logout</div>
       </div>
     </div>
     <!-- Game -->

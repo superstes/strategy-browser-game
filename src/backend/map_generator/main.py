@@ -1,5 +1,5 @@
 from time import time
-from os import environ
+from hashlib import md5
 from json import dumps as json_dumps
 
 from config import *
@@ -17,6 +17,8 @@ class Chunk:
         self.max_height = 0
         self.min_height = 0
         self.export_file = f"{EXPORT_PATH}/{key}"
+        self.chksum_file = f"{EXPORT_PATH}/{key}.chksum"
+        self.chksum = self._get_config_chksum()
         self._noise_kwargs = dict(
             size=CHUNK_RESOLUTION,
             pos_x=self.pos_x,
@@ -33,8 +35,27 @@ class Chunk:
         with open(f"{self.export_file}.txt", 'w', encoding='utf-8') as f:
             f.write(f'{int(time())}')
 
+        with open(self.chksum_file, 'w', encoding='utf-8') as f:
+            f.write(self.chksum)
+
+    def _config_changed(self) -> bool:
+        if not Path(self.chksum_file).is_file():
+            return True
+
+        with open(self.chksum_file, 'r', encoding='utf-8') as f:
+            return self.chksum != f.read()
+
+    @staticmethod
+    def _get_config_chksum() -> str:
+        g, t, = NOISE_GEO.cnf, NOISE_TERRAIN.cnf
+        return md5(str([
+            g.octaves, g.persistence, g.lacunarity, g.exponentiation, g.height, g.scale, g.seed,
+            t.octaves, t.persistence, t.lacunarity, t.exponentiation, t.height, t.scale, t.seed,
+            NOISE_GEO_LOWER_BY,
+        ]).encode('utf-8')).hexdigest()
+
     def build(self):
-        if not FORCE_REGEN and Path(f'{self.export_file}.json').is_file():
+        if not FORCE_REGEN and Path(f'{self.export_file}.json').is_file() and not self._config_changed():
             return
 
         print(

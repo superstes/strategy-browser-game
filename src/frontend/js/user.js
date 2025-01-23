@@ -33,6 +33,10 @@ export const user = (function() {
             this._GetUserSettings();
         }
 
+        HandleLogout() {
+            this._CloseSession();
+        }
+
         Valid() {
             return this._session != null
         }
@@ -47,8 +51,15 @@ export const user = (function() {
             // todo: securly store token
 
             this._session = "<API-TOKEN>";
-            this._sessionTime = Date.now() / 1000;
+            this._sessionTime = Date.now() * 0.001;
             this._sessionLifetimeSec = 4 * 60 * 60;
+        }
+
+        _CloseSession() {
+            // todo: delete session via API
+            this._session = null;
+            this._sessionTime = null;
+            this._sessionLifetimeSec = null;
         }
 
         _GetUserSettings() {

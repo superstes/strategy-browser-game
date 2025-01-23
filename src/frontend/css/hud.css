@@ -1,3 +1,62 @@
+#ui-hud {
+  position: absolute;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas: "clock coords music logout";
+  grid-gap: 15px;
+  margin: 2vh 3vh 2vh 3vh;
+  visibility: hidden;
+}
+
+.ui-element {
+  border-style: solid;
+  border-radius: 15px;
+  border-width: 2px;
+  border-color: var(--white);
+  margin-top: 2vh;
+}
+
+.ui-element-head {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--accent);
+  padding-top: 3px;
+  padding-left: 1px;
+}
+
+.ui-element-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  top: 18%;
+}
+
+#ui-clock {
+  grid-area: "clock";
+  background: transparent;
+}
+
+#ui-coords {
+  grid-area: "coords";
+  width: 55px;
+  height: 50px;
+  background-color: var(--c3);
+  text-align: center;
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--white);
+  text-wrap: nowrap;
+}
+
+#ui-coords-data {
+  overflow: hidden;
+}
+
+#ui-coords-head {
+  padding-top: 2px;
+}
+
 /*
   HOVER HELP TEXT
   https://www.w3schools.com/css/css_tooltip.asp
@@ -69,19 +128,6 @@
   border-color: var(--white);
 }
 
-/* SETTLEMENTS */
-
-.ui-settlement-info {
-  position: absolute;
-  background-color: var(--c4);
-  border-radius: 25%;
-  padding: 10px;
-  overflow: hidden;
-  opacity: 80%;
-  max-width: 10vw;
-  font-size: small;
-}
-
 /* USER */
 #ui-logon {
   position: relative;
@@ -141,4 +187,20 @@
 
 input {
   padding: 3px 6px;
+}
+
+#ui-logout {
+  grid-area: "logout";
+  margin-top: 20px;
+  width: 30px;
+  height: 22px;
+  text-align: center;
+  padding-top: 7px;
+  background-color: var(--c3);
+  color: whitesmoke;
+}
+
+#ui-logout:hover {
+  cursor: pointer;
+  color: brown;
 }
